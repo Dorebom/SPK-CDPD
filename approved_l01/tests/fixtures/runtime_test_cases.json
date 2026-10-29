@@ -1,0 +1,709 @@
+{
+  "schema": "cdpd.l01.runtime-test-definitions/v1",
+  "status": "DESIGN_DEFINITION_ONLY",
+  "tests": [
+    {
+      "test_id": "TGT-01",
+      "acceptance_criteria": [
+        "AC01",
+        "AC02"
+      ],
+      "preconditions": "専用browser、合成epoch A、page Target Aが1枚",
+      "stimulus": "明示Preflight後、同じrecordをWeb/Workerへ配る",
+      "expected": "BOUND。双方のepoch/target一致。別Targetへのcommand=0",
+      "implementation_owners": [
+        "L03",
+        "L04",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-02",
+      "acceptance_criteria": [
+        "AC02"
+      ],
+      "preconditions": "専用browserのChatGPT pageが0枚",
+      "stimulus": "Preflightを1回要求",
+      "expected": "TARGET_MISSING。操作0、DOM採取0、Binding発行0",
+      "implementation_owners": [
+        "L03",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-03",
+      "acceptance_criteria": [
+        "AC02"
+      ],
+      "preconditions": "ChatGPT pageが2枚、片方だけfocused",
+      "stimulus": "Preflightを1回要求",
+      "expected": "TARGET_AMBIGUOUS。どちらも選ばずBinding発行0",
+      "implementation_owners": [
+        "L03",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-04",
+      "acceptance_criteria": [
+        "AC02",
+        "AC04"
+      ],
+      "preconditions": "Aのrecord。Aを閉じ、同一URLのBをfocusedにする",
+      "stimulus": "引数なしbind/操作/captureを要求",
+      "expected": "TARGET_MISSINGまたはTARGET_BINDING_INVALID。Bへのcommand=0。auto rebind=0",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-05",
+      "acceptance_criteria": [
+        "AC01",
+        "AC02",
+        "AC04"
+      ],
+      "preconditions": "epoch Aでbinding。browserを再起動しepoch B、同じportへ",
+      "stimulus": "旧recordで操作/capture要求。target_idが同じmockも実行",
+      "expected": "BROWSER_IDENTITY_MISMATCH。DOM0、mutation0、restartによる回避0",
+      "implementation_owners": [
+        "L03",
+        "L04",
+        "L06",
+        "L10",
+        "L11"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-06",
+      "acceptance_criteria": [
+        "AC01",
+        "AC02"
+      ],
+      "preconditions": "AのTarget URLをhttp/www/別port/別host/opaqueへ変更する各subcase",
+      "stimulus": "guard実行",
+      "expected": "TARGET_ORIGIN_MISMATCH等。DOM0。元URLを自動navigateしない",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-07",
+      "acceptance_criteria": [
+        "AC02"
+      ],
+      "preconditions": "ChatGPT A1枚＋他サイト/空タブ1枚",
+      "stimulus": "Preflight要求",
+      "expected": "SINGLE_PAGE_VIOLATION。非対象tabを自動closeしない",
+      "implementation_owners": [
+        "L03",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-08",
+      "acceptance_criteria": [
+        "AC04"
+      ],
+      "preconditions": "recordなし、A1枚のみ",
+      "stimulus": "引数なしbind、create_facadeから操作",
+      "expected": "BINDING_REQUIRED。1枚という理由で自動選択しない",
+      "implementation_owners": [
+        "L04",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-09",
+      "acceptance_criteria": [
+        "AC03",
+        "AC04"
+      ],
+      "preconditions": "有効なAのrecord、操作なし",
+      "stimulus": "引数なしbindを複数回呼ぶ",
+      "expected": "同じbinding_id/Bで再検証。発行・expiry延長・focus選択は0",
+      "implementation_owners": [
+        "L04",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-10",
+      "acceptance_criteria": [
+        "AC02",
+        "AC04"
+      ],
+      "preconditions": "BOUND時にBoundPage/opsを取得し、後で失効させる",
+      "stimulus": "既存参照のevaluate/goto/click/uploadを試みる",
+      "expected": "旧参照も拒否。browser primitiveへのdispatch=0",
+      "implementation_owners": [
+        "L04",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-11",
+      "acceptance_criteria": [
+        "AC01"
+      ],
+      "preconditions": "同一record、時計をexpiresの直前/等値/直後に設定",
+      "stimulus": "guardを評価",
+      "expected": "直前のみ期限条件成立。等値/直後はBINDING_EXPIRED。自動延長0",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-12",
+      "acceptance_criteria": [
+        "AC02"
+      ],
+      "preconditions": "同じepoch/Target、期待Origin内で許可されたnavigation",
+      "stimulus": "遷移完了後に同じrecordを再検証",
+      "expected": "BOUNDへ戻れる。新binding_idなし。会話同一性の保証は別",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-13",
+      "acceptance_criteria": [
+        "AC02"
+      ],
+      "preconditions": "採取前後でframe/loader/SPA URLのいずれかが変化",
+      "stimulus": "1回captureする",
+      "expected": "NAVIGATION_DURING_CAPTURE、PARTIAL、STRUCTUREなし、自動再採取0",
+      "implementation_owners": [
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-14",
+      "acceptance_criteria": [
+        "AC01",
+        "AC02"
+      ],
+      "preconditions": "運用中のcontrol/operation CDP channelが既知の異常切断",
+      "stimulus": "当該recordで処理継続を試みる",
+      "expected": "INVALIDATED。S0のみ。自動reconnect/rebind/mutation=0",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L10",
+        "L11"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-15",
+      "acceptance_criteria": [
+        "AC01",
+        "AC02"
+      ],
+      "preconditions": "Callerを強制終了。active record/TTL有効、独立Watchdogが発行時clock anchorを保持、browser alive、revocationなし。keeper不在subcaseも用意",
+      "stimulus": "独立Workerがrecordを読み自分のsocketで検証",
+      "expected": "keeper有効時のみDIAGNOSTIC_ONLYで同じBの採取可。keeper不在はS0のみ。Callerのmutation/rebind=0",
+      "implementation_owners": [
+        "L06",
+        "L07",
+        "L10",
+        "L11"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-16",
+      "acceptance_criteria": [
+        "AC01",
+        "AC04"
+      ],
+      "preconditions": "/json/versionがGUIDなしprefix、空suffix、別pathを返す各subcase",
+      "stimulus": "epoch導出する",
+      "expected": "BROWSER_EPOCH_UNVERIFIED。PIDやtarget_idからepochを補わない",
+      "implementation_owners": [
+        "L03",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-17",
+      "acceptance_criteria": [
+        "AC01"
+      ],
+      "preconditions": "endpointがlocalhost/IPv6/別port/userinfo/query/fragment/末尾slash",
+      "stimulus": "入力検証する",
+      "expected": "ENDPOINT_NOT_ALLOWED。socket接続0",
+      "implementation_owners": [
+        "L03",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-18",
+      "acceptance_criteria": [
+        "AC01"
+      ],
+      "preconditions": "/json/versionがredirect、巨大payload、duplicate key、ws別host/port",
+      "stimulus": "discovery検証する",
+      "expected": "拒否。redirect先接続0。proxy経由0",
+      "implementation_owners": [
+        "L03",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-19",
+      "acceptance_criteria": [
+        "AC01",
+        "AC04"
+      ],
+      "preconditions": "最初のdiscoveryがepoch A、Playwright接続直前にBへ交代",
+      "stimulus": "同じHTTP URLによるrediscoveryを禁止した経路を試験",
+      "expected": "検証したWS A以外への接続0。再discovery差分で失効",
+      "implementation_owners": [
+        "L03",
+        "L04",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-20",
+      "acceptance_criteria": [
+        "AC03",
+        "AC04"
+      ],
+      "preconditions": "Aへ固定。exact_urlはA、target_idはBという矛盾した引数",
+      "stimulus": "bindを呼ぶ",
+      "expected": "ID矛盾を拒否。exact_url優先で成功させない",
+      "implementation_owners": [
+        "L04",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-21",
+      "acceptance_criteria": [
+        "AC01",
+        "AC02"
+      ],
+      "preconditions": "接続時page一覧はAだけ。後からBを追加",
+      "stimulus": "guard直前fresh一覧およびeventを検査",
+      "expected": "古いpages cacheから1枚と推定しない。単一page違反を検出",
+      "implementation_owners": [
+        "L03",
+        "L04",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-22",
+      "acceptance_criteria": [
+        "AC01"
+      ],
+      "preconditions": "page subtype非空、重複Target ID、filter未対応の各subcase",
+      "stimulus": "Preflightを行う",
+      "expected": "TARGET_UNVERIFIED/PROTOCOL_UNSUPPORTED。不明Targetにattachしない",
+      "implementation_owners": [
+        "L03",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-23",
+      "acceptance_criteria": [
+        "AC03"
+      ],
+      "preconditions": "新schemaのvalid envelope",
+      "stimulus": "targetだけ既存TargetBinding.from_dictへ渡す。full envelopeも試す",
+      "expected": "target射影は形状適合。full envelopeの直接投入は拒否",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-24",
+      "acceptance_criteria": [
+        "AC03"
+      ],
+      "preconditions": "expected_browser_id省略/None、envelope未登録",
+      "stimulus": "標準SDK/CLI入口から操作/capture要求",
+      "expected": "weak bindingの抜け道なし。実操作/DOM採取0",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-25",
+      "acceptance_criteria": [
+        "AC01",
+        "AC02"
+      ],
+      "preconditions": "wall clock巻戻し/大幅前進、sleep/resume、期限切れの各subcase",
+      "stimulus": "guard前後の時刻検査",
+      "expected": "CLOCK_DISCONTINUITY/EXPIRED。期限延長0",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L10",
+        "L11"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-26",
+      "acceptance_criteria": [
+        "AC01",
+        "AC04"
+      ],
+      "preconditions": "capture途中にcurrent binding_idが更新/明示revoked",
+      "stimulus": "postcheck実行",
+      "expected": "古い要求の構造をcommitしない。新bindingへ付け替えない",
+      "implementation_owners": [
+        "L05",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-27",
+      "acceptance_criteria": [
+        "AC03",
+        "AC04"
+      ],
+      "preconditions": "送信後に応答観測またはBinding検証に失敗",
+      "stimulus": "failure hook→診断→復旧判断",
+      "expected": "元operation_id/送出情報を保持。送信回数最大1。診断成否でWORK成功にしない",
+      "implementation_owners": [
+        "L04",
+        "L09",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-28",
+      "acceptance_criteria": [
+        "AC01",
+        "AC02"
+      ],
+      "preconditions": "isolated world context消滅/不明、採取直前に他Originへ遷移",
+      "stimulus": "固定script/guardを実行",
+      "expected": "DOM走査前Origin guard拒否またはcontext失敗。default contextへのfallback=0",
+      "implementation_owners": [
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-29",
+      "acceptance_criteria": [
+        "AC01"
+      ],
+      "preconditions": "9222 aliveだが専用launch記録なし/日常profile/外部listen",
+      "stimulus": "Preflightする",
+      "expected": "PROFILE_UNVERIFIED/運用前提拒否。他process kill/restart=0",
+      "implementation_owners": [
+        "L03",
+        "L11"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-30",
+      "acceptance_criteria": [
+        "AC02",
+        "AC04"
+      ],
+      "preconditions": "page追加違反を検知した後、追加pageを閉じる",
+      "stimulus": "引数なしbindや同じrecordで再開を要求",
+      "expected": "違反ラッチ維持。明示Preflightまでは拒否",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-31",
+      "acceptance_criteria": [
+        "AC01"
+      ],
+      "preconditions": "同じ専用profileへConsumer2つ/Worker2つが競合",
+      "stimulus": "同時処理を要求",
+      "expected": "所有/排他が不明な側は停止。重複mutationや同時captureなし",
+      "implementation_owners": [
+        "L05",
+        "L06",
+        "L07",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-32",
+      "acceptance_criteria": [
+        "AC01",
+        "AC03"
+      ],
+      "preconditions": "policy disabled、または保存先書込失敗",
+      "stimulus": "capture要求",
+      "expected": "policyはREJECTED。保存失敗は例外/入力保存エラー。Bundle保存成功を偽装しない",
+      "implementation_owners": [
+        "L06",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-33",
+      "acceptance_criteria": [
+        "AC03"
+      ],
+      "preconditions": "元FacadeとInstrumentedFacade",
+      "stimulus": "元Providerでcontract検証、wrapperは別署名として扱う",
+      "expected": "create_facade/3操作の公開署名・結果型不変。旧SHIRABE互換なし",
+      "implementation_owners": [
+        "L04",
+        "L09",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-34",
+      "acceptance_criteria": [
+        "AC01",
+        "AC04"
+      ],
+      "preconditions": "操作許可のないライブChatGPTや任意TEST_ONLY値を持つrequest",
+      "stimulus": "標準production入口へ投入",
+      "expected": "policy/スキーマ/スコープで拒否。合成originを運用へ持ち込まない",
+      "implementation_owners": [
+        "L03",
+        "L06",
+        "L10",
+        "L11"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-35",
+      "acceptance_criteria": [
+        "AC02"
+      ],
+      "preconditions": "専用browserはA1枚。OS focusを別アプリ/別profileの通常Chromeへ移す",
+      "stimulus": "same recordを再検証",
+      "expected": "focusではTargetを変更しない。操作の可否は対象guard/操作状態で判断",
+      "implementation_owners": [
+        "L04",
+        "L10",
+        "L11"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    },
+    {
+      "test_id": "TGT-36",
+      "acceptance_criteria": [
+        "AC01",
+        "AC02"
+      ],
+      "preconditions": "Workerを正常終了/Caller異常終了/既知CDP断を別fixture化",
+      "stimulus": "終了イベントを分類",
+      "expected": "正常detachやCaller crashを一律epoch変化にしない。既知異常CDP断は失効",
+      "implementation_owners": [
+        "L04",
+        "L06",
+        "L07",
+        "L10"
+      ],
+      "runtime_status": "NOT_RUN",
+      "actual": null,
+      "command": null,
+      "exit_code": null,
+      "log_ref": null
+    }
+  ]
+}

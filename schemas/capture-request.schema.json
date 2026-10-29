@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdpd:capture-request:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "event",
+    "target"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cdpd.capture-request/v1"
+    },
+    "event": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "urn:cdpd:event:1",
+      "title": "cdpd.event/v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "producer_id",
+        "producer_instance_id",
+        "operation_id",
+        "kind"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.event/v1"
+        },
+        "producer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "\\S"
+        },
+        "producer_instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "\\S"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "\\S"
+        },
+        "kind": {
+          "enum": [
+            "ACTION_STARTED",
+            "ACTION_FINISHED",
+            "ACTION_FAILED",
+            "OBSERVATION_FAILED",
+            "HEARTBEAT",
+            "MANUAL"
+          ]
+        },
+        "failure_code": {
+          "enum": [
+            "NONE",
+            "TARGET_MISSING",
+            "TARGET_AMBIGUOUS",
+            "NOT_INTERACTABLE",
+            "TIMEOUT",
+            "UNKNOWN",
+            "DISCONNECTED",
+            "RECONCILE_REQUIRED",
+            "POSTCONDITION_FAILED"
+          ]
+        },
+        "correlation": {
+          "type": "object",
+          "maxProperties": 16,
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "\\S"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024,
+            "pattern": "\\S"
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "endpoint",
+        "target_id",
+        "expected_origin"
+      ],
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "target_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "\\S"
+        },
+        "expected_origin": {
+          "type": "string",
+          "pattern": "^https?://[^/?#]+$"
+        },
+        "expected_browser_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "timeout_seconds": {
+      "type": "number",
+      "minimum": 0.1,
+      "maximum": 20
+    },
+    "max_nodes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2000
+    }
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "schema": "cdpd.chatgpt-bundle-input-contract/v1",
+  "revision": "L06_IMPL001_N01_COMPATIBLE",
+  "ticket_id": "CDPD-L06",
+  "authority": "EXECUTION_CANDIDATE_ONLY_NOT_ACCEPTANCE",
+  "file_schema": "bundle_payload_v1.schema.json",
+  "file_definitions": {
+    "TRIGGER.json": "event",
+    "EVENTS.json": "events",
+    "RESULT.json": "result",
+    "STRUCTURE.json": "structure",
+    "MANIFEST.json": "manifest",
+    "COMMIT.json": "commit"
+  },
+  "required_files": [
+    "TRIGGER.json",
+    "EVENTS.json",
+    "RESULT.json",
+    "MANIFEST.json",
+    "COMMIT.json"
+  ],
+  "allowed_files": [
+    "TRIGGER.json",
+    "EVENTS.json",
+    "RESULT.json",
+    "STRUCTURE.json",
+    "MANIFEST.json",
+    "COMMIT.json"
+  ],
+  "byte_limits": {
+    "total": 10485760,
+    "TRIGGER.json": 32768,
+    "EVENTS.json": 1048576,
+    "maximum_json_depth": 48
+  },
+  "invalid_input_policy": "GENERATE_SCHEMA_VALID_UNKNOWN_AND_REJECT_CONFLICTING_DECLARED_REPORT",
+  "report_reason": "INTEGRITY_INVALID",
+  "diagnostic_codes": [
+    "BUNDLE_BYTES_INVALID",
+    "BUNDLE_JSON_INVALID",
+    "BUNDLE_SCHEMA_INVALID",
+    "BUNDLE_HASH_INVALID",
+    "PROFILE_INCONSISTENT"
+  ],
+  "binding_record_hash": "SHA256_UTF8_OF_binding_record_raw_json; strict-parse raw and exact semantic equality with typed binding_record; never use this raw field outside this fixed Binding parser",
+  "generic_legacy_without_profile": "NOT_ELIGIBLE_FOR_CHATGPT_PROFILE_REPORT; NO_IMPLICIT_DEFAULTING",
+  "success_failure_codes": [
+    null,
+    "NONE"
+  ],
+  "significant_drift_input": "FORBIDDEN_EXTRA_FIELD; derive from actual normalized structure instead",
+  "validation_owner": {
+    "L06": "Producer: full payload Schema + profile consistency before publication and after read-back verification. No bool-only COMPLETE.",
+    "L08": "Consumer: mandatory same front-end on current AND baseline bytes before report derivation; no prevalidated=True bypass.",
+    "L10": "Synthetic positive/negative independent verification.",
+    "L11": "Windows process/storage/ACL and binding continuity tests."
+  },
+  "authenticity_limit": "Schema/hash/internal consistency do not authenticate a writer, live DOM observation, fsync, lease continuity, or a Human approval. Those remain producer/runtime/trusted-approval obligations.",
+  "history_consistency": {
+    "counter_semantics": "ONE_CUMULATIVE_DIAGNOSTIC_EVENT_LOSS_COUNTER_PER_BASE_STREAM_SHARED_BY_ALL_ENVELOPE_CARRIERS",
+    "base_stream_key": [
+      "event.producer_id",
+      "event.producer_instance_id",
+      "binding_id",
+      "binding_sha256",
+      "control_generation"
+    ],
+    "same_bundle_membership": "ALL_HISTORY_ROWS_MATCH_TRIGGER_BASE_STREAM; DO_NOT_RETARGET_OLD_ROWS",
+    "sequence_domains": {
+      "LIVENESS_SAMPLE": {
+        "event_kind": "HEARTBEAT",
+        "failure_code": "NONE",
+        "profile_reason": "HEARTBEAT_SAMPLE",
+        "sequence_source": "SEPARATE_LIVENESS_SAMPLE_SEQUENCE",
+        "gap_policy": "COALESCED_GAPS_NOT_DIAGNOSTIC_LOSS"
+      },
+      "DIAGNOSTIC_EVENT": {
+        "match": "ALL_OTHER_VALID_MATRIX_EVENTS",
+        "sequence_source": "PRODUCER_INSTANCE_DIAGNOSTIC_EVENT_SEQUENCE",
+        "gap_policy": "COUNT_INTERIOR_RETAINED_DIAGNOSTIC_GAPS_ONLY"
+      }
+    },
+    "domain_authority": "DERIVE_FROM_VALIDATED_FIXED_MATRIX_TRIPLE; NO_CALLER_SELECTED_DOMAIN_FIELD",
+    "raw_heartbeat_mailbox": "NOT_A_BUNDLE_ENVELOPE; DO_NOT_COMPARE_ITS_SEQUENCE_TO_DIAGNOSTIC_EVENTS_OR_JOURNAL",
+    "sequence_order_and_duplicate_key": [
+      "base_stream_key",
+      "derived_sequence_domain",
+      "producer_seq"
+    ],
+    "event_id_uniqueness": "GLOBAL_ACROSS_DOMAINS; SAME_TRIGGER_ENVELOPE_IN_HISTORY_IS_ONE_DECLARATION",
+    "trigger_participation": "INCLUDED_IN_COUNTER_AND_EXACTNESS_CHECKS; NO_GAP_TO_TRIGGER_OUTSIDE_RETAINED_HISTORY",
+    "counter_order": "CHECK_COMPARABLE_SNAPSHOTS_BY_PRODUCER_SEQ_WITHIN_EACH_CARRIER_DOMAIN; DO_NOT_INFER_CROSS_DOMAIN_ORDER_FROM_SEQUENCE_OR_UTC",
+    "counter_decrease": "REJECT_IN_COMPARABLE_SAME_DOMAIN_SNAPSHOT_ORDER; COUNTER_SCOPE_IS_STILL_THE_COMMON_BASE_STREAM",
+    "inexact_to_exact": "REJECT_IN_COMPARABLE_SAME_DOMAIN_SNAPSHOT_ORDER; ANY_INEXACT_CARRIER_MAKES_AGGREGATE_INEXACT",
+    "reset": "ONLY_EXPLICIT_NEW_BASE_STREAM; NEW_PRODUCER_INSTANCE_HAS_ITS_OWN_SEQUENCE; BINDING_OR_GENERATION_CHANGE_DOES_NOT_RESET_PRODUCER_INSTANCE_SEQUENCE",
+    "retained_gap_lower_bound": "SUM_OF(seq[i+1]-seq[i]-1) OVER_ADJACENT_RETAINED_DIAGNOSTIC_EVENT_ROWS_AFTER_FILTERING_LIVENESS_SAMPLE",
+    "gap_exclusions": [
+      "BEFORE_FIRST_RETAINED_DIAGNOSTIC_ROW",
+      "AFTER_LAST_RETAINED_DIAGNOSTIC_ROW",
+      "TRIGGER_TO_RETAINED_WINDOW_EDGE",
+      "LIVENESS_COALESCING_GAPS",
+      "SUPERVISOR_JOURNAL_SEQUENCE_DIFFERENCES"
+    ],
+    "aggregate_lower_bound_minimum": "MAX(MAX_ALL_DECLARED_CUMULATIVE_LOWER_BOUNDS, RETAINED_DIAGNOSTIC_GAP_LOWER_BOUND)",
+    "overlapping_evidence": "ALL_CARRIERS_SNAPSHOT_THE_SAME_DIAGNOSTIC_LOSS_COUNTER; DO_NOT_ADD_DUPLICATE_COUNTER_SNAPSHOTS_OR_OVERLAPPING_DIAGNOSTIC_GAPS",
+    "aggregate_exactness": "ANY_DECLARATION_INEXACT_IMPLIES_AGGREGATE_INEXACT; ALL_DECLARATIONS_EXACT_DOES_NOT_AUTOMATICALLY_PROVE_AGGREGATE_EXACT",
+    "known_exactness_limit": "MAX_IS_A_LOWER_BOUND_NOT_A_PROOF_OF_THE_TOTAL; PRODUCER_MUST_NOT_CLAIM_EXACT_WITHOUT_ITS_COMPLETE_ACCOUNTING",
+    "window_cropping": "CANNOT_ERASE_KNOWN_OR_INEXACT_CUMULATIVE_LOSS; NO_SCOPE_PROVING_EXCLUSION_FIELDS_IN_V1",
+    "late_events": "DO_NOT_MUTATE_A_COMMITTED_BUNDLE; ANY_NEW_INPUT_MUST_PASS_PER_DOMAIN_ORDER_AND_CUMULATIVE_LOSS_RULES",
+    "sampling": "AGGREGATE_COMPLETE_REQUIRES_SAMPLED_FALSE; UNKNOWN_TOTAL_REQUIRES_LOSS_COUNT_EXACT_FALSE",
+    "complete_implication": {
+      "loss_lower_bound": 0,
+      "loss_count_exact": true,
+      "sampled": false,
+      "unexplained_retained_diagnostic_gap_count": 0
+    },
+    "aggregate_record_link": "RESULT.history_dropped_count_EQUALS_RESULT.profile.history_coverage.loss_lower_bound",
+    "maximum_loss_integer": 9007199254740991,
+    "applies_to": [
+      "COMPLETE",
+      "PARTIAL",
+      "REJECTED"
+    ],
+    "on_contradiction": "PROFILE_INCONSISTENT / REQUIRED_COVERAGE_MISSING; NEVER_REPAIR_INPUT",
+    "counter_snapshot_carriers": {
+      "DIAGNOSTIC_EVENT": "SNAPSHOT_OF_BASE_STREAM_DIAGNOSTIC_EVENT_LOSS",
+      "LIVENESS_SAMPLE": "SNAPSHOT_OF_THE_SAME_BASE_STREAM_DIAGNOSTIC_EVENT_LOSS; NOT_A_SEPARATE_LIVENESS_LOSS_POPULATION"
+    },
+    "liveness_coalescing_loss": "NEVER_ADDED_TO_THE_DIAGNOSTIC_EVENT_LOSS_COUNTER"
+  },
+  "structure_eligibility": {
+    "applies_when": "STRUCTURE.json_PRESENT",
+    "required_stage_names": [
+      "S1",
+      "S2"
+    ],
+    "allowed_stage_forms": [
+      {
+        "status": "COMPLETE",
+        "reason_code": null
+      },
+      {
+        "status": "PARTIAL",
+        "reason_code": "TRUNCATED"
+      }
+    ],
+    "bounded_partial_stage_requires": {
+      "capture_status": "PARTIAL",
+      "STRUCTURE.truncated": true,
+      "coverage_complete": false
+    },
+    "forbidden_stage_statuses": [
+      "FAILED",
+      "NOT_RUN"
+    ],
+    "global_prerequisites": [
+      "POLICY_ALLOWED",
+      "SANITIZATION_PASSED",
+      "ALL_IDENTITY_CHECKS_TRUE",
+      "WORKER_TERMINATION_NORMAL",
+      "NONNULL_VALID_BINDING",
+      "DOCUMENT_BEFORE_AFTER_MATCH"
+    ],
+    "history_only_partial": "S1_AND_S2_COMPLETE_WITH_NULL_REASON; HISTORY_COMPLETE_FALSE; ALL_GLOBAL_PREREQUISITES_HOLD",
+    "partial_failure_codes": [
+      null,
+      "NONE",
+      "TRUNCATED",
+      "HISTORY_INCOMPLETE"
+    ],
+    "partial_requires": "STRUCTURE.truncated_TRUE_OR_history_coverage.complete_FALSE; coverage_complete_FALSE_ALONE_IS_NOT_SUFFICIENT",
+    "partial_failure_reason_support": {
+      "TRUNCATED": "STRUCTURE.truncated_TRUE_AND_coverage_complete_FALSE",
+      "HISTORY_INCOMPLETE": "history_coverage.complete_FALSE"
+    },
+    "metadata_without_structure": "PRESERVE_VALID_PARTIAL_AND_REJECTED_WITH_EXISTING_FIXED_STAGE_REASON_CODES",
+    "on_contradiction": "PROFILE_INCONSISTENT / REQUIRED_EVIDENCE_MISSING_OR_CAPTURE_NOT_COMPLETE; NEVER_DELETE_STRUCTURE_TO_REPAIR_INPUT"
+  },
+  "stage_reason_semantics": {
+    "COMPLETE": "reason_code must be JSON null",
+    "NOT_RUN": "duration_ms=0; null=unspecified stage-specific reason; NONE=explicit no additional stage reason; neither is success; existing fixed enum codes are accepted",
+    "new_L06_writer": "emit actual known fixed reason or NOT_RUN for skipped stages",
+    "compatibility": "same accepted metadata shapes as L02 FIX003; no byte rewriting",
+    "structure": "FAILED/NOT_RUN never retain STRUCTURE even with NONE/null"
+  }
+}

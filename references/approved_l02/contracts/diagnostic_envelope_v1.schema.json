@@ -1,0 +1,306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdpd:chatgpt-event-envelope:v1",
+  "title": "ChatGPT diagnostic envelope (design candidate)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "event_id",
+    "producer_seq",
+    "occurred_at_utc",
+    "binding_id",
+    "binding_sha256",
+    "control_generation",
+    "event",
+    "profile"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cdpd.chatgpt-event-envelope/v1"
+    },
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36
+    },
+    "producer_seq": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "description": "Monotonic sequence within producer instance and derived domain. The fixed HEARTBEAT/NONE/HEARTBEAT_SAMPLE triple is the separate LIVENESS_SAMPLE domain; other valid matrix events are DIAGNOSTIC_EVENT. Never compare raw heartbeat mailbox or Supervisor journal sequences to diagnostic event sequences."
+    },
+    "occurred_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+      "minLength": 20,
+      "maxLength": 20
+    },
+    "binding_id": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "binding_sha256": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "control_generation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "producer_id",
+        "producer_instance_id",
+        "operation_id",
+        "kind",
+        "failure_code",
+        "correlation"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.event/v1"
+        },
+        "producer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+          "not": {
+            "pattern": "[\\u0000-\\u001f\\u007f]"
+          }
+        },
+        "producer_instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+          "not": {
+            "pattern": "[\\u0000-\\u001f\\u007f]"
+          }
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+          "not": {
+            "pattern": "[\\u0000-\\u001f\\u007f]"
+          }
+        },
+        "kind": {
+          "enum": [
+            "ACTION_STARTED",
+            "ACTION_FINISHED",
+            "ACTION_FAILED",
+            "OBSERVATION_FAILED",
+            "HEARTBEAT",
+            "MANUAL"
+          ]
+        },
+        "failure_code": {
+          "enum": [
+            "NONE",
+            "TARGET_MISSING",
+            "TARGET_AMBIGUOUS",
+            "NOT_INTERACTABLE",
+            "TIMEOUT",
+            "UNKNOWN",
+            "DISCONNECTED",
+            "RECONCILE_REQUIRED",
+            "POSTCONDITION_FAILED"
+          ]
+        },
+        "correlation": {
+          "type": "object",
+          "maxProperties": 16,
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+            "not": {
+              "pattern": "[\\u0000-\\u001f\\u007f]"
+            }
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+            "not": {
+              "pattern": "[\\u0000-\\u001f\\u007f]"
+            }
+          }
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason",
+        "dispatch_state",
+        "ui_context",
+        "document_marker",
+        "loss_lower_bound",
+        "loss_count_exact"
+      ],
+      "properties": {
+        "reason": {
+          "enum": [
+            "ACTION_TIMEOUT",
+            "CDP_CHANNEL_LOST",
+            "CHROME_EXITED",
+            "CLOCK_OR_KEEPER_LOST",
+            "CONSUMER_EXITED",
+            "ELEMENT_NOT_INTERACTABLE",
+            "HEARTBEAT_EXPIRED",
+            "HEARTBEAT_SAMPLE",
+            "LOCATOR_MULTI_MATCH",
+            "LOCATOR_NOT_FOUND",
+            "MANUAL_CAPTURE",
+            "NAVIGATION_DURING_CAPTURE",
+            "OBSERVATION_TIMEOUT",
+            "OBSERVATION_UNDETERMINED",
+            "OPERATION_ARMED",
+            "OPERATION_FINISHED",
+            "PAGE_SET_VIOLATION",
+            "POSTCONDITION_FAILED",
+            "SCHEDULED_CAPTURE",
+            "SPOOL_BACKPRESSURE",
+            "SUBMISSION_UNCERTAIN",
+            "TARGET_IDENTITY_MISMATCH",
+            "WORKER_DEADLINE",
+            "WORKER_FAILED",
+            "PROVIDER_FAILURE_UNCLASSIFIED",
+            "PROVIDER_DISCONNECTED"
+          ]
+        },
+        "dispatch_state": {
+          "enum": [
+            "NOT_DISPATCHED",
+            "POSSIBLE",
+            "CONFIRMED",
+            "UNKNOWN",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "ui_context": {
+          "enum": [
+            "IDLE_EMPTY",
+            "IDLE_INPUT_PRESENT",
+            "GENERATING",
+            "RESPONSE_READY",
+            "UNDETERMINED"
+          ]
+        },
+        "document_marker": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "frame_id",
+                "loader_id"
+              ],
+              "properties": {
+                "frame_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                  "not": {
+                    "pattern": "[\\u0000-\\u001f\\u007f]"
+                  }
+                },
+                "loader_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                  "not": {
+                    "pattern": "[\\u0000-\\u001f\\u007f]"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "loss_lower_bound": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Snapshot of one cumulative DIAGNOSTIC_EVENT loss lower bound within producer_id, producer_instance_id, binding_id, binding_sha256 and control_generation. All carriers, including HEARTBEAT samples, report the same counter. Liveness coalescing never increments it. Compare snapshot order only within a sequence domain; cropping is not a reset or exclusion proof."
+        },
+        "loss_count_exact": {
+          "type": "boolean",
+          "description": "Whether the shared base-stream diagnostic-event loss total is exact. Unknown is sticky in producer accounting; a false-to-true transition in comparable same-domain snapshot order is invalid. Any inexact trigger/history carrier requires an inexact Bundle aggregate. This metadata is not proof of runtime observation."
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "binding_id": {
+            "type": "null"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "binding_sha256": {
+            "type": "null"
+          },
+          "control_generation": {
+            "const": 0
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "binding_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "control_generation": {
+            "minimum": 1
+          }
+        }
+      }
+    }
+  ],
+  "$comment": "FIX003 draft. Loss/sequence semantics are mandatory in bundle_input_contract.json. No new required field, event enum or generic API signature."
+}

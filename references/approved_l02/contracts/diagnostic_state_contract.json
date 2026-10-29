@@ -1,0 +1,290 @@
+{
+  "schema": "cdpd.diagnostic-state-contract/v1",
+  "states": [
+    "RECEIVED",
+    "S0_DURABLE",
+    "QUEUED",
+    "GUARDING",
+    "S1",
+    "S2",
+    "POSTCHECK",
+    "FINALIZING",
+    "COMMITTED_COMPLETE",
+    "COMMITTED_PARTIAL",
+    "COMMITTED_REJECTED",
+    "STORAGE_FAILED",
+    "INPUT_REJECTED"
+  ],
+  "initial": "RECEIVED",
+  "terminal_states": [
+    "COMMITTED_COMPLETE",
+    "COMMITTED_PARTIAL",
+    "COMMITTED_REJECTED",
+    "STORAGE_FAILED",
+    "INPUT_REJECTED"
+  ],
+  "transitions": [
+    {
+      "from": "RECEIVED",
+      "event": "INPUT_INVALID",
+      "to": "INPUT_REJECTED",
+      "action": "NO_BROWSER_NO_BUNDLE"
+    },
+    {
+      "from": "RECEIVED",
+      "event": "S0_COMMITTED",
+      "to": "S0_DURABLE",
+      "action": "ACK_CAPTURE_ACCEPTED_AFTER_S0"
+    },
+    {
+      "from": "S0_DURABLE",
+      "event": "ENQUEUE",
+      "to": "QUEUED",
+      "action": "RETAIN_S0_AND_HISTORY"
+    },
+    {
+      "from": "QUEUED",
+      "event": "START_WORKER",
+      "to": "GUARDING",
+      "action": "MARK_ATTEMPT_ONCE_BEFORE_PROCESS_START"
+    },
+    {
+      "from": "GUARDING",
+      "event": "GUARDS_OK",
+      "to": "S1",
+      "action": "FIXED_SCRIPT_ONLY"
+    },
+    {
+      "from": "GUARDING",
+      "event": "POLICY_DENIED",
+      "to": "FINALIZING",
+      "action": "REJECTED_METADATA"
+    },
+    {
+      "from": "GUARDING",
+      "event": "IDENTITY_OR_LEASE_INVALID",
+      "to": "FINALIZING",
+      "action": "PARTIAL_METADATA"
+    },
+    {
+      "from": "GUARDING",
+      "event": "QUEUED_TOO_LATE",
+      "to": "FINALIZING",
+      "action": "PARTIAL_METADATA"
+    },
+    {
+      "from": "S1",
+      "event": "S1_DONE",
+      "to": "S2",
+      "action": "STAGE_SANITIZED_DATA_ONLY"
+    },
+    {
+      "from": "S2",
+      "event": "S2_DONE",
+      "to": "POSTCHECK",
+      "action": "STAGE_SANITIZED_DATA_ONLY"
+    },
+    {
+      "from": "POSTCHECK",
+      "event": "POSTCHECK_OK",
+      "to": "FINALIZING",
+      "action": "SUPERVISOR_RECHECK_BEFORE_COMMIT"
+    },
+    {
+      "from": "POSTCHECK",
+      "event": "POSTCHECK_FAILED",
+      "to": "FINALIZING",
+      "action": "DISCARD_ALL_UNCOMMITTED_STRUCTURE"
+    },
+    {
+      "from": "FINALIZING",
+      "event": "COMMIT_COMPLETE_VERIFIED",
+      "to": "COMMITTED_COMPLETE",
+      "action": "RETURN_CAPTURE_OUTCOME"
+    },
+    {
+      "from": "FINALIZING",
+      "event": "COMMIT_PARTIAL_VERIFIED",
+      "to": "COMMITTED_PARTIAL",
+      "action": "RETURN_CAPTURE_OUTCOME"
+    },
+    {
+      "from": "FINALIZING",
+      "event": "COMMIT_REJECTED_VERIFIED",
+      "to": "COMMITTED_REJECTED",
+      "action": "RETURN_CAPTURE_OUTCOME"
+    }
+  ],
+  "default": "DENY_NO_SIDE_EFFECT",
+  "interrupts": [
+    {
+      "event": "STORAGE_ERROR",
+      "applies_to": [
+        "RECEIVED",
+        "S0_DURABLE",
+        "QUEUED",
+        "GUARDING",
+        "S1",
+        "S2",
+        "POSTCHECK",
+        "FINALIZING"
+      ],
+      "to": "STORAGE_FAILED",
+      "priority": 0,
+      "action": "NO_BUNDLE_PATH_NO_FAKE_COMMIT"
+    },
+    {
+      "event": "SUPERVISOR_LOST",
+      "applies_to": [
+        "S0_DURABLE",
+        "QUEUED",
+        "GUARDING",
+        "S1",
+        "S2",
+        "POSTCHECK",
+        "FINALIZING"
+      ],
+      "to": "FINALIZING",
+      "priority": 1,
+      "action": "RECOVER_METADATA_ONLY_ON_NEW_SUPERVISOR_NO_WORKER_REPLAY"
+    },
+    {
+      "event": "PRIVACY_OR_IDENTITY_FAILURE",
+      "applies_to": [
+        "S1",
+        "S2",
+        "POSTCHECK",
+        "FINALIZING"
+      ],
+      "to": "FINALIZING",
+      "priority": 2,
+      "action": "DISCARD_ALL_UNCOMMITTED_STRUCTURE"
+    },
+    {
+      "event": "WORKER_FAILED_OR_DEADLINE",
+      "applies_to": [
+        "GUARDING",
+        "S1",
+        "S2",
+        "POSTCHECK",
+        "FINALIZING"
+      ],
+      "to": "FINALIZING",
+      "priority": 3,
+      "action": "OWNED_WORKER_KILL_NO_RECURSION_METADATA_ONLY"
+    },
+    {
+      "event": "BINDING_REVOKED",
+      "applies_to": [
+        "S1",
+        "S2",
+        "POSTCHECK",
+        "FINALIZING"
+      ],
+      "to": "FINALIZING",
+      "priority": 4,
+      "action": "LATCH_FAILURE_DISCARD_STRUCTURE_PARTIAL_ONLY"
+    },
+    {
+      "event": "LEASE_EXPIRED",
+      "applies_to": [
+        "S1",
+        "S2",
+        "POSTCHECK",
+        "FINALIZING"
+      ],
+      "to": "FINALIZING",
+      "priority": 5,
+      "action": "LATCH_FAILURE_DISCARD_STRUCTURE_PARTIAL_ONLY"
+    },
+    {
+      "event": "IDENTITY_OR_LEASE_INVALID",
+      "applies_to": [
+        "S1",
+        "S2",
+        "POSTCHECK",
+        "FINALIZING"
+      ],
+      "to": "FINALIZING",
+      "priority": 6,
+      "action": "LATCH_FAILURE_DISCARD_STRUCTURE_PARTIAL_ONLY"
+    },
+    {
+      "event": "KNOWN_CDP_LOSS",
+      "applies_to": [
+        "S0_DURABLE",
+        "QUEUED",
+        "GUARDING",
+        "S1",
+        "S2",
+        "POSTCHECK",
+        "FINALIZING"
+      ],
+      "to": "FINALIZING",
+      "priority": 7,
+      "action": "INVALIDATE_BINDING_STOP_NEW_MUTATION_LATCH_DISCARD_STRUCTURE_METADATA_ONLY"
+    }
+  ],
+  "diagnostic_ui_mutation_count": 0,
+  "attempts_per_capture_id_max": 1,
+  "failure_latch": {
+    "initial": false,
+    "monotonic": true,
+    "events": [
+      "SUPERVISOR_LOST",
+      "PRIVACY_OR_IDENTITY_FAILURE",
+      "WORKER_FAILED_OR_DEADLINE",
+      "BINDING_REVOKED",
+      "LEASE_EXPIRED",
+      "IDENTITY_OR_LEASE_INVALID",
+      "POSTCHECK_FAILED",
+      "QUEUED_TOO_LATE",
+      "KNOWN_CDP_LOSS"
+    ],
+    "effect": "DISCARD_ALL_UNCOMMITTED_STRUCTURE_AND_FORBID_COMPLETE",
+    "terminal_event_policy": "NO_REWRITE_RECORD_SEPARATE_METADATA"
+  },
+  "commit_guards": {
+    "COMMIT_COMPLETE_VERIFIED": [
+      "S0_DURABLE",
+      "NO_FAILURE_LATCH",
+      "POLICY_ALLOWED",
+      "POSTCHECK_OK",
+      "WORKER_NORMAL_EXIT_CONFIRMED",
+      "FINAL_GUARDS_OK",
+      "STAGES_COMPLETE",
+      "COVERAGE_COMPLETE",
+      "HISTORY_COMPLETE",
+      "S3_DURABLE",
+      "BUNDLE_VERIFIED"
+    ],
+    "COMMIT_PARTIAL_VERIFIED": [
+      "S0_DURABLE",
+      "S3_DURABLE",
+      "BUNDLE_VERIFIED",
+      "NO_UNVERIFIED_STRUCTURE"
+    ],
+    "COMMIT_REJECTED_VERIFIED": [
+      "S0_DURABLE",
+      "S3_DURABLE",
+      "BUNDLE_VERIFIED",
+      "POLICY_DENIED",
+      "STRUCTURE_EMPTY"
+    ]
+  },
+  "event_effect_contract": {
+    "EVT-26": {
+      "scope": "MATCHING_BINDING_ONLY",
+      "state_event": "KNOWN_CDP_LOSS",
+      "revoke_before_next_mutation": true,
+      "keep_event_kind_failure_and_correlations": true,
+      "capture_dom_allowed": false,
+      "new_worker_allowed": false,
+      "auto_reconnect": false,
+      "retry": false,
+      "before_s0": "PERSIST_S0_THEN_METADATA_FINALIZE",
+      "after_commit": "IMMUTABLE_BUNDLE_SEPARATE_METADATA_AND_REVOKE_CURRENT_MATCHING_BINDING",
+      "stale_binding_event": "RECORD_METADATA_ONLY_DO_NOT_REVOKE_NEW_GENERATION"
+    }
+  }
+}

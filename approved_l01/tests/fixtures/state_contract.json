@@ -1,0 +1,229 @@
+{
+  "schema": "cdpd.l01.design-state-contract/v1",
+  "status": "DESIGN_ONLY_NOT_RUNTIME",
+  "states": [
+    "UNBOUND",
+    "PREFLIGHT",
+    "BOUND",
+    "NAVIGATING",
+    "INVALIDATED",
+    "EXPIRED",
+    "RELEASED"
+  ],
+  "default_transition": "DENY",
+  "transitions": [
+    {
+      "from": "UNBOUND",
+      "event": "EXPLICIT_PREFLIGHT",
+      "to": "PREFLIGHT",
+      "guard": "old work settled; exclusive owner",
+      "effect": "new record not yet issued"
+    },
+    {
+      "from": "PREFLIGHT",
+      "event": "CHECKS_OK",
+      "to": "BOUND",
+      "guard": "G0-G7 all true",
+      "effect": "mint binding_id and immutable record once"
+    },
+    {
+      "from": "PREFLIGHT",
+      "event": "CHECKS_FAILED",
+      "to": "UNBOUND",
+      "guard": "no prior usable binding",
+      "effect": "save failure metadata; no browser content command"
+    },
+    {
+      "from": "BOUND",
+      "event": "REVALIDATE_OK",
+      "to": "BOUND",
+      "guard": "same record and G0-G7 true",
+      "effect": "no new binding_id; no expiry extension"
+    },
+    {
+      "from": "BOUND",
+      "event": "SAME_TARGET_NAV_STARTED",
+      "to": "NAVIGATING",
+      "guard": "same target and expected origin; no competing page",
+      "effect": "stop new UI commands/capture while navigation unresolved"
+    },
+    {
+      "from": "NAVIGATING",
+      "event": "NAVIGATION_SETTLED",
+      "to": "BOUND",
+      "guard": "same epoch/id/origin; full live revalidation",
+      "effect": "same binding_id; not rebind"
+    },
+    {
+      "from": "NAVIGATING",
+      "event": "NAVIGATION_UNVERIFIED",
+      "to": "INVALIDATED",
+      "guard": "deadline, unknown origin, unexpected target, or lost context",
+      "effect": "no DOM; no automatic recovery"
+    },
+    {
+      "from": "BOUND",
+      "event": "TARGET_LOST",
+      "to": "INVALIDATED",
+      "guard": "pinned target destroyed or missing",
+      "effect": "poison all retained BoundPage/ops references"
+    },
+    {
+      "from": "BOUND",
+      "event": "PAGE_SET_CHANGED",
+      "to": "INVALIDATED",
+      "guard": "another page created or page subtype becomes unsupported",
+      "effect": "do not choose remaining/current/focused page"
+    },
+    {
+      "from": "BOUND",
+      "event": "ORIGIN_CHANGED",
+      "to": "INVALIDATED",
+      "guard": "not exact expected origin",
+      "effect": "stop content commands; no fallback"
+    },
+    {
+      "from": "BOUND",
+      "event": "BROWSER_EPOCH_CHANGED",
+      "to": "INVALIDATED",
+      "guard": "fresh path fingerprint differs",
+      "effect": "no automatic browser restart"
+    },
+    {
+      "from": "BOUND",
+      "event": "CDP_DISCONNECTED",
+      "to": "INVALIDATED",
+      "guard": "an established operational/control CDP channel is known lost",
+      "effect": "no automatic reconnect/replay; save S0"
+    },
+    {
+      "from": "BOUND",
+      "event": "TTL_REACHED",
+      "to": "EXPIRED",
+      "guard": "UTC or monotonic deadline reached",
+      "effect": "no grace extension for capture"
+    },
+    {
+      "from": "BOUND",
+      "event": "CLOCK_DISCONTINUITY",
+      "to": "INVALIDATED",
+      "guard": "clock drift >5s or suspend/resume detected",
+      "effect": "next explicit preflight only"
+    },
+    {
+      "from": "BOUND",
+      "event": "EXPLICIT_RELEASE",
+      "to": "RELEASED",
+      "guard": "caller ends binding at safe boundary",
+      "effect": "revoke operating and capture rights, do not close browser"
+    },
+    {
+      "from": "BOUND",
+      "event": "OWNER_CRASH",
+      "to": "BOUND",
+      "guard": "last active record and independent Watchdog clock keeper valid; no revocation",
+      "effect": "DIAGNOSTIC_ONLY; Worker fresh-checks same record"
+    },
+    {
+      "from": "BOUND",
+      "event": "CAPTURE_POSTCHECK_FAILED",
+      "to": "INVALIDATED",
+      "guard": "identity/page/lease changed before commit",
+      "effect": "discard uncommitted structure; metadata only"
+    },
+    {
+      "from": "BOUND",
+      "event": "CAPTURE_NAVIGATION_RACE",
+      "to": "NAVIGATING",
+      "guard": "same target navigation detected during one capture",
+      "effect": "PARTIAL for this request; no automatic capture retry"
+    },
+    {
+      "from": "BOUND",
+      "event": "SUPERSEDED",
+      "to": "INVALIDATED",
+      "guard": "trusted current binding_id differs",
+      "effect": "old queue item is rejected, never retargeted"
+    },
+    {
+      "from": "BOUND",
+      "event": "START_NEW_OPERATION",
+      "to": "BOUND",
+      "guard": "owner live, full guard and no active/uncertain operation",
+      "effect": "operation_id from caller; binding_id unchanged"
+    },
+    {
+      "from": "BOUND",
+      "event": "MUTATION_OUTCOME_UNKNOWN",
+      "to": "BOUND",
+      "guard": "identity still verifies but sent result is unknown",
+      "effect": "RECONCILIATION_REQUIRED overlay, no new mutation"
+    },
+    {
+      "from": "BOUND",
+      "event": "EXPLICIT_PREFLIGHT",
+      "to": "PREFLIGHT",
+      "guard": "IDLE; old work settled and current record explicitly revoked",
+      "effect": "old record becomes terminal; failed replacement cannot restore it"
+    },
+    {
+      "from": "INVALIDATED",
+      "event": "EXPLICIT_PREFLIGHT",
+      "to": "PREFLIGHT",
+      "guard": "work settled; old record remains revoked",
+      "effect": "new record only after checks"
+    },
+    {
+      "from": "EXPIRED",
+      "event": "EXPLICIT_PREFLIGHT",
+      "to": "PREFLIGHT",
+      "guard": "work settled; no automatic lease renewal",
+      "effect": "new record only after checks"
+    },
+    {
+      "from": "RELEASED",
+      "event": "EXPLICIT_PREFLIGHT",
+      "to": "PREFLIGHT",
+      "guard": "authorized owner at next safe boundary",
+      "effect": "new record only after checks"
+    }
+  ],
+  "priority_rules": [
+    {
+      "from": [
+        "BOUND",
+        "NAVIGATING"
+      ],
+      "events": [
+        "TTL_REACHED"
+      ],
+      "to": "EXPIRED"
+    },
+    {
+      "from": [
+        "BOUND",
+        "NAVIGATING"
+      ],
+      "events": [
+        "CLOCK_DISCONTINUITY",
+        "CDP_DISCONNECTED",
+        "BROWSER_EPOCH_CHANGED",
+        "TARGET_LOST",
+        "ORIGIN_CHANGED",
+        "PAGE_SET_CHANGED",
+        "SUPERSEDED",
+        "EXPLICIT_REVOCATION"
+      ],
+      "to": "INVALIDATED"
+    },
+    {
+      "from": [
+        "PREFLIGHT"
+      ],
+      "events": [
+        "ANY_GUARD_FAILURE"
+      ],
+      "to": "UNBOUND"
+    }
+  ]
+}

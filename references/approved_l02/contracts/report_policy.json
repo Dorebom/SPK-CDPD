@@ -1,0 +1,153 @@
+{
+  "schema": "cdpd.chatgpt-report-policy/v1",
+  "scope": "STATIC_UI_CONTRACT_COMPATIBILITY_NOT_BUSINESS_SUCCESS",
+  "precedence": [
+    "UNKNOWN",
+    "BREAKING",
+    "REVIEW",
+    "PASS"
+  ],
+  "unknown_conditions": [
+    "INTEGRITY_INVALID",
+    "CAPTURE_NOT_COMPLETE",
+    "POLICY_NOT_ALLOWED",
+    "BINDING_NOT_VERIFIED",
+    "REQUIRED_COVERAGE_MISSING",
+    "BASELINE_NOT_APPROVED",
+    "CONTEXT_NOT_COMPARABLE",
+    "CATALOG_NOT_COMPARABLE",
+    "DOCUMENT_RELATION_UNKNOWN",
+    "REQUIRED_PROBE_INCOMPLETE",
+    "REQUIRED_EVIDENCE_MISSING"
+  ],
+  "breaking_when": "ALL_PREREQUISITES_VALID_AND_REQUIRED_FUNCTION_VIOLATED",
+  "review_when": "NO_REQUIRED_FAILURE_AND_SIGNIFICANT_NONBREAKING_DRIFT",
+  "pass_when": "ALL_PREREQUISITES_VALID_ALL_APPLICABLE_REQUIRED_PROBES_PASS_NO_SIGNIFICANT_DRIFT",
+  "baseline_automatic_approval": false,
+  "modify_source_bundle": false,
+  "emit_mutation_or_repair_command": false,
+  "baseline_catalog": [
+    "composer.input",
+    "composer.send",
+    "generation.stop",
+    "attachment.input",
+    "response.container"
+  ],
+  "not_proven": [
+    "SEND_SUCCESS",
+    "RESPONSE_CONTENT_CORRECT",
+    "RESPONSE_CAUSAL_IDENTITY",
+    "DOWNLOAD_CORRECT",
+    "WORK_SUCCESS"
+  ],
+  "validation_pipeline": [
+    "STRICT_REPORT_JSON",
+    "REPORT_SCHEMA",
+    "STRICT_BUNDLE_JSON_AND_LIMITS",
+    "ALL_BUNDLE_FILE_SCHEMAS",
+    "MANIFEST_COMMIT_HASH_AND_FILE_SET",
+    "PROFILE_INTERNAL_CONSISTENCY",
+    "DERIVE_PREREQUISITES_AND_PROBES",
+    "DERIVE_OVERALL",
+    "COMPARE_DECLARED_WITH_DERIVED"
+  ],
+  "profile_revision": "0.3.0-l02-fix002",
+  "probe_contracts": {
+    "composer.input": {
+      "recipes": [
+        "IDLE_EMPTY",
+        "IDLE_INPUT_PRESENT",
+        "GENERATING",
+        "RESPONSE_READY"
+      ],
+      "required": true,
+      "expected": {
+        "match_min": 1,
+        "match_max": 1,
+        "visible_min": 1,
+        "enabled_min": 1
+      }
+    },
+    "composer.send": {
+      "recipes": [
+        "IDLE_EMPTY",
+        "IDLE_INPUT_PRESENT"
+      ],
+      "required": true,
+      "expected": {
+        "match_min": 1,
+        "match_max": 1,
+        "visible_min": 1,
+        "enabled_min": 0
+      },
+      "recipe_overrides": {
+        "IDLE_INPUT_PRESENT": {
+          "enabled_min": 1
+        }
+      }
+    },
+    "generation.stop": {
+      "recipes": [
+        "GENERATING"
+      ],
+      "required": true,
+      "expected": {
+        "match_min": 1,
+        "match_max": 1,
+        "visible_min": 1,
+        "enabled_min": 1
+      }
+    },
+    "attachment.input": {
+      "recipes": [
+        "IDLE_EMPTY",
+        "IDLE_INPUT_PRESENT",
+        "RESPONSE_READY"
+      ],
+      "required": false,
+      "expected": {
+        "match_min": 0,
+        "match_max": null,
+        "visible_min": 0,
+        "enabled_min": 0
+      }
+    },
+    "response.container": {
+      "recipes": [
+        "RESPONSE_READY"
+      ],
+      "required": true,
+      "expected": {
+        "match_min": 1,
+        "match_max": null,
+        "visible_min": 1,
+        "enabled_min": 0
+      }
+    }
+  },
+  "optional_probe_policy": "IF_APPLICABLE_MISSING_OR_INCOMPLETE_UNKNOWN_ELSE_BASELINE_COUNT_DRIFT_REVIEW",
+  "failure_reasons": [
+    "REQUIRED_FUNCTION_VIOLATED",
+    "SIGNIFICANT_DRIFT"
+  ],
+  "hypothesis_policy": "FIXED_NOT_EVALUATED_NO_CAUSAL_CONFIDENCE",
+  "normalization_contract": {
+    "id": "cdpd.chatgpt-feature-counts/v1",
+    "fields": [
+      "match_count",
+      "visible_count",
+      "enabled_count",
+      "probe_complete"
+    ],
+    "excluded": [
+      "capture_id",
+      "timestamp",
+      "target_id",
+      "browser_epoch",
+      "sequence",
+      "bbox_coordinates"
+    ],
+    "locale_viewport_browser_profile_must_match": true
+  },
+  "bundle_input_contract": "cdpd.chatgpt-bundle-input-contract/v1"
+}

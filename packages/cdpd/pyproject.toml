@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cdpd"
+version = "0.2.1"
+description = "Generic CDP structure diagnostics candidate"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+cdp = ["websocket-client>=1.8,<2"]
+
+[project.scripts]
+cdpd = "cdpd.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

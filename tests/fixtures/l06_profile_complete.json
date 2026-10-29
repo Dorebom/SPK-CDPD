@@ -1,0 +1,260 @@
+{
+  "TRIGGER.json": {
+    "schema": "cdpd.event/v1",
+    "producer_id": "chatgpt-web",
+    "producer_instance_id": "44444444-4444-4444-8444-444444444444",
+    "operation_id": "synthetic-operation-001",
+    "kind": "MANUAL",
+    "failure_code": "NONE",
+    "correlation": {
+      "run_id": "synthetic-run-001"
+    }
+  },
+  "EVENTS.json": {
+    "schema": "cdpd.events/v1",
+    "events": []
+  },
+  "RESULT.json": {
+    "schema": "cdpd.capture-result/v1",
+    "capture_status": "COMPLETE",
+    "assessment_status": "NOT_PERFORMED",
+    "failure_code": "NONE",
+    "profile": {
+      "policy_allowed": true,
+      "coverage_complete": true,
+      "history_coverage": {
+        "complete": true,
+        "retained_count": 0,
+        "loss_lower_bound": 0,
+        "loss_count_exact": true,
+        "sampled": false,
+        "window_seconds": 120
+      },
+      "identity_checks": {
+        "before": true,
+        "after": true,
+        "current": true,
+        "keeper": true,
+        "lease": true
+      },
+      "stages": {
+        "S0": {
+          "status": "COMPLETE",
+          "reason_code": null,
+          "duration_ms": 1
+        },
+        "S1": {
+          "status": "COMPLETE",
+          "reason_code": null,
+          "duration_ms": 1
+        },
+        "S2": {
+          "status": "COMPLETE",
+          "reason_code": null,
+          "duration_ms": 1
+        },
+        "S3": {
+          "status": "COMPLETE",
+          "reason_code": null,
+          "duration_ms": 1
+        }
+      },
+      "sanitization": {
+        "passed": true,
+        "script_sha256": "d541e6900d04b6512e51ba577f919771c826d7764d6b99fcc3a823069e1b0ec8",
+        "probe_catalog_sha256": "12a8cdc162c80d38f72c8d2eec5b40c7bde0d812390462d830b799da7ab089cb",
+        "allowlist_version": "cdpd.chatgpt-safe-structure/v1"
+      },
+      "observation_relation": "CURRENT_OBSERVATION",
+      "report_context": {
+        "recipe": "IDLE_EMPTY",
+        "context_verified": true,
+        "locale_class": "ja-JP",
+        "viewport_class": "desktop",
+        "browser_profile": "SYNTHETIC_CHROMIUM_PROFILE",
+        "catalog_sha256": "12a8cdc162c80d38f72c8d2eec5b40c7bde0d812390462d830b799da7ab089cb",
+        "normalization_sha256": "91ac5e892bfdba9cd43181c621951332fe420d0c92389cec3273790d9e9f5e4b",
+        "policy_sha256": "c9c5aedf379ca2ab5edf43f2071ff0ac83b7b190abbf813176773216ac74958f"
+      },
+      "profile_schema": "cdpd.chatgpt-profile/v1",
+      "capture_id": "C-11111111111111111111111111111111",
+      "binding_record": {
+        "schema": "cdpd.chatgpt-target-binding/v1",
+        "binding_id": "22222222-2222-4222-8222-222222222222",
+        "epoch_algorithm": "cdpd.browser-ws-path.sha256-128/v1",
+        "target": {
+          "endpoint": "http://127.0.0.1:9222",
+          "target_id": "SYNTHETIC-TARGET-A",
+          "expected_origin": "https://chatgpt.com",
+          "expected_browser_id": "254095102094427e3ef2c333da294588"
+        },
+        "issued_at_utc": "2026-10-17T12:00:00Z",
+        "expires_at_utc": "2026-10-17T16:00:00Z"
+      },
+      "binding_record_raw_json": "{\n  \"schema\": \"cdpd.chatgpt-target-binding/v1\",\n  \"binding_id\": \"22222222-2222-4222-8222-222222222222\",\n  \"epoch_algorithm\": \"cdpd.browser-ws-path.sha256-128/v1\",\n  \"target\": {\n    \"endpoint\": \"http://127.0.0.1:9222\",\n    \"target_id\": \"SYNTHETIC-TARGET-A\",\n    \"expected_origin\": \"https://chatgpt.com\",\n    \"expected_browser_id\": \"254095102094427e3ef2c333da294588\"\n  },\n  \"issued_at_utc\": \"2026-10-17T12:00:00Z\",\n  \"expires_at_utc\": \"2026-10-17T16:00:00Z\"\n}\n",
+      "binding_record_sha256": "d1b1f223662ca42f7a4aae5fac1b594307a58ddf07294749289d8c54307a3f5c",
+      "control_generation": 1,
+      "supervisor_instance_id": "55555555-5555-4555-8555-555555555555",
+      "cause_event_ids": [
+        "33333333-3333-4333-8333-333333333333"
+      ],
+      "initial_trigger_event_id": "33333333-3333-4333-8333-333333333333",
+      "trigger_envelope": {
+        "schema": "cdpd.chatgpt-event-envelope/v1",
+        "event_id": "33333333-3333-4333-8333-333333333333",
+        "producer_seq": 7,
+        "occurred_at_utc": "2026-10-17T12:05:00Z",
+        "binding_id": "22222222-2222-4222-8222-222222222222",
+        "binding_sha256": "d1b1f223662ca42f7a4aae5fac1b594307a58ddf07294749289d8c54307a3f5c",
+        "control_generation": 1,
+        "event": {
+          "schema": "cdpd.event/v1",
+          "producer_id": "chatgpt-web",
+          "producer_instance_id": "44444444-4444-4444-8444-444444444444",
+          "operation_id": "synthetic-operation-001",
+          "kind": "MANUAL",
+          "failure_code": "NONE",
+          "correlation": {
+            "run_id": "synthetic-run-001"
+          }
+        },
+        "profile": {
+          "reason": "MANUAL_CAPTURE",
+          "dispatch_state": "NOT_APPLICABLE",
+          "ui_context": "IDLE_EMPTY",
+          "document_marker": null,
+          "loss_lower_bound": 0,
+          "loss_count_exact": true
+        }
+      },
+      "source_cutoff_seq": 7,
+      "worker_termination": "NORMAL",
+      "timing": {
+        "failed_at_utc": null,
+        "accepted_at_utc": "2026-10-17T12:05:00Z",
+        "capture_started_at_utc": "2026-10-17T12:05:00Z",
+        "finished_at_utc": "2026-10-17T12:05:00Z",
+        "latency_ms": 0
+      },
+      "document_markers": {
+        "trigger": null,
+        "before": {
+          "frame_id": "SYNTHETIC-FRAME",
+          "loader_id": "SYNTHETIC-LOADER"
+        },
+        "after": {
+          "frame_id": "SYNTHETIC-FRAME",
+          "loader_id": "SYNTHETIC-LOADER"
+        }
+      }
+    },
+    "started_utc": "2026-10-17T12:05:00Z",
+    "finished_utc": "2026-10-17T12:05:00Z",
+    "selected_scope": "MAIN_FRAME_AND_OPEN_SHADOW",
+    "history_dropped_count": 0,
+    "target_id": "SYNTHETIC-TARGET-A"
+  },
+  "STRUCTURE.json": {
+    "schema": "cdpd.structure/v1",
+    "nodes": [],
+    "profile": {
+      "probes": [
+        {
+          "feature_id": "composer.input",
+          "match_count": 1,
+          "visible_count": 1,
+          "enabled_count": 1,
+          "probe_complete": true
+        },
+        {
+          "feature_id": "composer.send",
+          "match_count": 1,
+          "visible_count": 1,
+          "enabled_count": 0,
+          "probe_complete": true
+        },
+        {
+          "feature_id": "generation.stop",
+          "match_count": 1,
+          "visible_count": 1,
+          "enabled_count": 1,
+          "probe_complete": true
+        },
+        {
+          "feature_id": "attachment.input",
+          "match_count": 1,
+          "visible_count": 0,
+          "enabled_count": 1,
+          "probe_complete": true
+        },
+        {
+          "feature_id": "response.container",
+          "match_count": 1,
+          "visible_count": 1,
+          "enabled_count": 1,
+          "probe_complete": true
+        }
+      ],
+      "feature_shapes": {
+        "composer.input": [
+          {
+            "tag": "input",
+            "role": "textbox",
+            "parent": null,
+            "shadow": false
+          }
+        ],
+        "composer.send": [
+          {
+            "tag": "button",
+            "role": null,
+            "parent": null,
+            "shadow": false
+          }
+        ],
+        "generation.stop": [
+          {
+            "tag": "button",
+            "role": null,
+            "parent": null,
+            "shadow": false
+          }
+        ],
+        "attachment.input": [
+          {
+            "tag": "input",
+            "role": null,
+            "parent": null,
+            "shadow": false
+          }
+        ],
+        "response.container": [
+          {
+            "tag": "button",
+            "role": null,
+            "parent": null,
+            "shadow": false
+          }
+        ]
+      }
+    },
+    "truncated": false,
+    "iframeCount": 0,
+    "openShadowCount": 0,
+    "coverage": {
+      "scope": "MAIN_FRAME_AND_OPEN_SHADOW",
+      "iframeDocuments": "NOT_CAPTURED",
+      "closedShadow": "NOT_OBSERVABLE",
+      "accessibilityTree": "NOT_CAPTURED"
+    },
+    "observation": "STRUCTURE_ONLY_NOT_FUNCTIONAL_VERIFICATION",
+    "binding": {
+      "target_id": "SYNTHETIC-TARGET-A",
+      "browser_id": "254095102094427e3ef2c333da294588",
+      "origin": "https://chatgpt.com",
+      "loader_id": "SYNTHETIC-LOADER",
+      "binding_strength": "PINNED_BROWSER"
+    },
+    "command_audit": []
+  }
+}

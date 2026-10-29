@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdpd:chatgpt-target-binding:1",
+  "title": "CDPD ChatGPT Target Binding v1 — L01 Candidate",
+  "description": "Immutable profile envelope, not a CaptureRequest and not directly accepted by TargetBinding.from_dict(). Shape validation is necessary but NOT sufficient for authorization or live target identity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "binding_id",
+    "epoch_algorithm",
+    "target",
+    "issued_at_utc",
+    "expires_at_utc"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cdpd.chatgpt-target-binding/v1"
+    },
+    "binding_id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36
+    },
+    "epoch_algorithm": {
+      "const": "cdpd.browser-ws-path.sha256-128/v1"
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "endpoint",
+        "target_id",
+        "expected_origin",
+        "expected_browser_id"
+      ],
+      "properties": {
+        "endpoint": {
+          "const": "http://127.0.0.1:9222"
+        },
+        "target_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[\\x21-\\x7e]+$",
+          "description": "Opaque CDP ID. Preserve exact spelling; never infer from URL/title/focus.",
+          "not": {
+            "pattern": "[^\\x21-\\x7e]"
+          }
+        },
+        "expected_origin": {
+          "const": "https://chatgpt.com"
+        },
+        "expected_browser_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$",
+          "description": "First 32 hex characters of SHA-256 over UTF-8 browser WebSocket path. Mandatory in this profile.",
+          "minLength": 32,
+          "maxLength": 32
+        }
+      }
+    },
+    "issued_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+      "minLength": 20,
+      "maxLength": 20
+    },
+    "expires_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+      "minLength": 20,
+      "maxLength": 20
+    }
+  },
+  "$comment": "Semantic requirements: expiry-issued is exactly 14400 seconds; issued<=now<expiry; active binding_id matches trusted current state; no revocation/supersession; clock discontinuities fail closed; live endpoint/epoch/target/count/origin/frame checks precede any content operation. No TEST_ONLY switch in this production schema."
+}

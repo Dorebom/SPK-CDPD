@@ -1,0 +1,2 @@
+# Additive offline L08 modules reuse accepted runtime validation/storage.
+-r requirements-l06.txt

@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cdpd-chatgpt-adapter"
+version = "0.2.1"
+description = "Optional metadata-only CDPD integration"
+requires-python = ">=3.11"
+dependencies = ["cdpd==0.2.1", "chatgpt-web-api==0.2.1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

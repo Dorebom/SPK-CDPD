@@ -1,0 +1,13 @@
+{
+  "schema": "cdpd.chatgpt-target-binding/v1",
+  "binding_id": "22222222-2222-4222-8222-222222222222",
+  "epoch_algorithm": "cdpd.browser-ws-path.sha256-128/v1",
+  "target": {
+    "endpoint": "http://127.0.0.1:9222",
+    "target_id": "SYNTHETIC-TARGET-A",
+    "expected_origin": "https://chatgpt.com",
+    "expected_browser_id": "254095102094427e3ef2c333da294588"
+  },
+  "issued_at_utc": "2026-10-17T12:00:00Z",
+  "expires_at_utc": "2026-10-17T16:00:00Z"
+}

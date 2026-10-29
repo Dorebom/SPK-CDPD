@@ -1,0 +1,1866 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdpd:chatgpt-bundle-payload:v1",
+  "$comment": "FIX003 draft. Closed all-file schemas plus mandatory cumulative-loss/domain/retained-gap and stage/structure semantics. Generic v0.2.1 without profile is not eligible for this reporter.",
+  "$ref": "#/$defs/bundle",
+  "$defs": {
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "producer_id",
+        "producer_instance_id",
+        "operation_id",
+        "kind",
+        "failure_code",
+        "correlation"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.event/v1"
+        },
+        "producer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+          "not": {
+            "pattern": "[\\u0000-\\u001f\\u007f]"
+          },
+          "allOf": [
+            {
+              "pattern": "\\S"
+            }
+          ]
+        },
+        "producer_instance_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+          "not": {
+            "pattern": "[\\u0000-\\u001f\\u007f]"
+          },
+          "allOf": [
+            {
+              "pattern": "\\S"
+            }
+          ]
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+          "not": {
+            "pattern": "[\\u0000-\\u001f\\u007f]"
+          },
+          "allOf": [
+            {
+              "pattern": "\\S"
+            }
+          ]
+        },
+        "kind": {
+          "enum": [
+            "ACTION_STARTED",
+            "ACTION_FINISHED",
+            "ACTION_FAILED",
+            "OBSERVATION_FAILED",
+            "HEARTBEAT",
+            "MANUAL"
+          ]
+        },
+        "failure_code": {
+          "enum": [
+            "NONE",
+            "TARGET_MISSING",
+            "TARGET_AMBIGUOUS",
+            "NOT_INTERACTABLE",
+            "TIMEOUT",
+            "UNKNOWN",
+            "DISCONNECTED",
+            "RECONCILE_REQUIRED",
+            "POSTCONDITION_FAILED"
+          ]
+        },
+        "correlation": {
+          "type": "object",
+          "maxProperties": 16,
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+            "not": {
+              "pattern": "[\\u0000-\\u001f\\u007f]"
+            },
+            "allOf": [
+              {
+                "pattern": "\\S"
+              }
+            ]
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+            "not": {
+              "pattern": "[\\u0000-\\u001f\\u007f]"
+            },
+            "allOf": [
+              {
+                "pattern": "\\S"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "envelope": {
+      "title": "ChatGPT diagnostic envelope (design candidate)",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "event_id",
+        "producer_seq",
+        "occurred_at_utc",
+        "binding_id",
+        "binding_sha256",
+        "control_generation",
+        "event",
+        "profile"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.chatgpt-event-envelope/v1"
+        },
+        "event_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        "producer_seq": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991,
+          "description": "Monotonic sequence within producer instance and derived domain. The fixed HEARTBEAT/NONE/HEARTBEAT_SAMPLE triple is the separate LIVENESS_SAMPLE domain; other valid matrix events are DIAGNOSTIC_EVENT. Never compare raw heartbeat mailbox or Supervisor journal sequences to diagnostic event sequences."
+        },
+        "occurred_at_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+          "minLength": 20,
+          "maxLength": 20
+        },
+        "binding_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+              "minLength": 36,
+              "maxLength": 36
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "binding_sha256": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "minLength": 64,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "control_generation": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "event": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "producer_id",
+            "producer_instance_id",
+            "operation_id",
+            "kind",
+            "failure_code",
+            "correlation"
+          ],
+          "properties": {
+            "schema": {
+              "const": "cdpd.event/v1"
+            },
+            "producer_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+              "not": {
+                "pattern": "[\\u0000-\\u001f\\u007f]"
+              }
+            },
+            "producer_instance_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+              "not": {
+                "pattern": "[\\u0000-\\u001f\\u007f]"
+              }
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+              "not": {
+                "pattern": "[\\u0000-\\u001f\\u007f]"
+              }
+            },
+            "kind": {
+              "enum": [
+                "ACTION_STARTED",
+                "ACTION_FINISHED",
+                "ACTION_FAILED",
+                "OBSERVATION_FAILED",
+                "HEARTBEAT",
+                "MANUAL"
+              ]
+            },
+            "failure_code": {
+              "enum": [
+                "NONE",
+                "TARGET_MISSING",
+                "TARGET_AMBIGUOUS",
+                "NOT_INTERACTABLE",
+                "TIMEOUT",
+                "UNKNOWN",
+                "DISCONNECTED",
+                "RECONCILE_REQUIRED",
+                "POSTCONDITION_FAILED"
+              ]
+            },
+            "correlation": {
+              "type": "object",
+              "maxProperties": 16,
+              "propertyNames": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                "not": {
+                  "pattern": "[\\u0000-\\u001f\\u007f]"
+                }
+              },
+              "additionalProperties": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024,
+                "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                "not": {
+                  "pattern": "[\\u0000-\\u001f\\u007f]"
+                }
+              }
+            }
+          }
+        },
+        "profile": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reason",
+            "dispatch_state",
+            "ui_context",
+            "document_marker",
+            "loss_lower_bound",
+            "loss_count_exact"
+          ],
+          "properties": {
+            "reason": {
+              "enum": [
+                "ACTION_TIMEOUT",
+                "CDP_CHANNEL_LOST",
+                "CHROME_EXITED",
+                "CLOCK_OR_KEEPER_LOST",
+                "CONSUMER_EXITED",
+                "ELEMENT_NOT_INTERACTABLE",
+                "HEARTBEAT_EXPIRED",
+                "HEARTBEAT_SAMPLE",
+                "LOCATOR_MULTI_MATCH",
+                "LOCATOR_NOT_FOUND",
+                "MANUAL_CAPTURE",
+                "NAVIGATION_DURING_CAPTURE",
+                "OBSERVATION_TIMEOUT",
+                "OBSERVATION_UNDETERMINED",
+                "OPERATION_ARMED",
+                "OPERATION_FINISHED",
+                "PAGE_SET_VIOLATION",
+                "POSTCONDITION_FAILED",
+                "SCHEDULED_CAPTURE",
+                "SPOOL_BACKPRESSURE",
+                "SUBMISSION_UNCERTAIN",
+                "TARGET_IDENTITY_MISMATCH",
+                "WORKER_DEADLINE",
+                "WORKER_FAILED",
+                "PROVIDER_FAILURE_UNCLASSIFIED",
+                "PROVIDER_DISCONNECTED"
+              ]
+            },
+            "dispatch_state": {
+              "enum": [
+                "NOT_DISPATCHED",
+                "POSSIBLE",
+                "CONFIRMED",
+                "UNKNOWN",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "ui_context": {
+              "enum": [
+                "IDLE_EMPTY",
+                "IDLE_INPUT_PRESENT",
+                "GENERATING",
+                "RESPONSE_READY",
+                "UNDETERMINED"
+              ]
+            },
+            "document_marker": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "frame_id",
+                    "loader_id"
+                  ],
+                  "properties": {
+                    "frame_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256,
+                      "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                      "not": {
+                        "pattern": "[\\u0000-\\u001f\\u007f]"
+                      }
+                    },
+                    "loader_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256,
+                      "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                      "not": {
+                        "pattern": "[\\u0000-\\u001f\\u007f]"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "loss_lower_bound": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991,
+              "description": "Snapshot of one cumulative DIAGNOSTIC_EVENT loss lower bound within producer_id, producer_instance_id, binding_id, binding_sha256 and control_generation. All carriers, including HEARTBEAT samples, report the same counter. Liveness coalescing never increments it. Compare snapshot order only within a sequence domain; cropping is not a reset or exclusion proof."
+            },
+            "loss_count_exact": {
+              "type": "boolean",
+              "description": "Whether the shared base-stream diagnostic-event loss total is exact. Unknown is sticky in producer accounting; a false-to-true transition in comparable same-domain snapshot order is invalid. Any inexact trigger/history carrier requires an inexact Bundle aggregate. This metadata is not proof of runtime observation."
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "binding_id": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "binding_sha256": {
+                "type": "null"
+              },
+              "control_generation": {
+                "const": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "binding_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+                "minLength": 64,
+                "maxLength": 64
+              },
+              "control_generation": {
+                "minimum": 1
+              }
+            }
+          }
+        }
+      ],
+      "$comment": "FIX003 draft. Loss/sequence semantics are mandatory in bundle_input_contract.json. No new required field, event enum or generic API signature."
+    },
+    "binding": {
+      "title": "CDPD ChatGPT Target Binding v1 — L01 Candidate",
+      "description": "Immutable profile envelope, not a CaptureRequest and not directly accepted by TargetBinding.from_dict(). Shape validation is necessary but NOT sufficient for authorization or live target identity.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "binding_id",
+        "epoch_algorithm",
+        "target",
+        "issued_at_utc",
+        "expires_at_utc"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.chatgpt-target-binding/v1"
+        },
+        "binding_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        "epoch_algorithm": {
+          "const": "cdpd.browser-ws-path.sha256-128/v1"
+        },
+        "target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "endpoint",
+            "target_id",
+            "expected_origin",
+            "expected_browser_id"
+          ],
+          "properties": {
+            "endpoint": {
+              "const": "http://127.0.0.1:9222"
+            },
+            "target_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[\\x21-\\x7e]+$",
+              "description": "Opaque CDP ID. Preserve exact spelling; never infer from URL/title/focus.",
+              "not": {
+                "pattern": "[^\\x21-\\x7e]"
+              }
+            },
+            "expected_origin": {
+              "const": "https://chatgpt.com"
+            },
+            "expected_browser_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$",
+              "description": "First 32 hex characters of SHA-256 over UTF-8 browser WebSocket path. Mandatory in this profile.",
+              "minLength": 32,
+              "maxLength": 32
+            }
+          }
+        },
+        "issued_at_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+          "minLength": 20,
+          "maxLength": 20
+        },
+        "expires_at_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+          "minLength": 20,
+          "maxLength": 20
+        }
+      },
+      "$comment": "Semantic requirements: expiry-issued is exactly 14400 seconds; issued<=now<expiry; active binding_id matches trusted current state; no revocation/supersession; clock discontinuities fail closed; live endpoint/epoch/target/count/origin/frame checks precede any content operation. No TEST_ONLY switch in this production schema."
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason_code",
+        "duration_ms"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "FAILED",
+            "NOT_RUN"
+          ]
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "enum": [
+                "BINDING_REVOKED",
+                "BROWSER_IDENTITY_MISMATCH",
+                "CAPTURE_DEADLINE",
+                "CAPTURE_FAILED",
+                "CDP_COMMAND_FAILED",
+                "CDP_CONNECT_FAILED",
+                "CDP_DISCOVERY_FAILED",
+                "CDP_DISCOVERY_TOO_LARGE",
+                "CDP_RESPONSE_TOO_LARGE",
+                "CLOCK_OR_KEEPER_LOST",
+                "COLLECTOR_EXCEPTION",
+                "COMMAND_NOT_ALLOWED",
+                "DISCONNECTED",
+                "ENDPOINT_NOT_ALLOWED",
+                "ENDPOINT_REDIRECT_REJECTED",
+                "FRAME_ORIGIN_UNVERIFIED",
+                "HISTORY_INCOMPLETE",
+                "INPUT_INVALID",
+                "KNOWN_CDP_LOSS",
+                "LEASE_EXPIRED",
+                "NAVIGATION_DURING_CAPTURE",
+                "NONE",
+                "NOT_RUN",
+                "NO_ACTIVE_BINDING",
+                "POLICY_DENIED",
+                "PRIVACY_OR_IDENTITY_FAILURE",
+                "SCRIPT_NOT_ALLOWED",
+                "SPOOL_BACKPRESSURE",
+                "STORAGE_ERROR",
+                "STRUCTURE_EVALUATION_FAILED",
+                "STRUCTURE_INVALID",
+                "SUPERVISOR_LOST",
+                "TARGET_BINDING_INVALID",
+                "TARGET_ORIGIN_MISMATCH",
+                "TRUNCATED",
+                "UNKNOWN",
+                "WORKER_FAILED_OR_DEADLINE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 300000
+        }
+      },
+      "$comment": "When STRUCTURE exists, S1/S2 must be COMPLETE/null or explicitly bounded PARTIAL/TRUNCATED. FAILED and NOT_RUN never authorize retained structure. See bundle_input_contract.json/structure_eligibility and mandatory semantic validation. L06 N-01 compatibility decision: metadata-only NOT_RUN accepts null (unspecified stage reason), NONE (explicit no additional stage reason), or the existing fixed reason enum; duration_ms must be 0. Neither null nor NONE implies successful execution. New L06 producers choose the actual fixed reason or NOT_RUN. COMPLETE requires null. No accepted shape is silently repaired."
+    },
+    "history_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "complete",
+        "retained_count",
+        "loss_lower_bound",
+        "loss_count_exact",
+        "sampled",
+        "window_seconds"
+      ],
+      "properties": {
+        "complete": {
+          "type": "boolean"
+        },
+        "retained_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "loss_lower_bound": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Lower bound for the fixed Bundle evidence scope; >= max(declared cumulative bounds, retained diagnostic interior-gap bound). Repeated and overlapping loss claims are not blindly added."
+        },
+        "loss_count_exact": {
+          "type": "boolean",
+          "description": "Cannot be true when any trigger/history loss declaration is false. True additionally depends on complete producer accounting; the reader never derives it from max alone."
+        },
+        "sampled": {
+          "type": "boolean"
+        },
+        "window_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 120
+        }
+      },
+      "$comment": "All trigger/history carriers snapshot one shared base-stream DIAGNOSTIC_EVENT loss counter. Aggregate dominates max of those repeated snapshots and retained diagnostic interior-gap count. Liveness coalescing is not loss. Any inexact carrier makes aggregate inexact. max does not prove an exact total. See bundle_input_contract.json/history_consistency."
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recipe",
+        "context_verified",
+        "locale_class",
+        "viewport_class",
+        "browser_profile",
+        "catalog_sha256",
+        "normalization_sha256",
+        "policy_sha256"
+      ],
+      "properties": {
+        "recipe": {
+          "enum": [
+            "IDLE_EMPTY",
+            "IDLE_INPUT_PRESENT",
+            "GENERATING",
+            "RESPONSE_READY",
+            "UNDETERMINED"
+          ]
+        },
+        "context_verified": {
+          "type": "boolean"
+        },
+        "locale_class": {
+          "type": "string",
+          "pattern": "^[A-Za-z]{2,8}(-[A-Za-z0-9]{1,8})*$",
+          "maxLength": 35
+        },
+        "viewport_class": {
+          "enum": [
+            "desktop",
+            "tablet",
+            "mobile",
+            "unknown"
+          ]
+        },
+        "browser_profile": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]{1,128}$",
+          "maxLength": 128
+        },
+        "catalog_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "normalization_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "policy_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        }
+      }
+    },
+    "timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "failed_at_utc",
+        "accepted_at_utc",
+        "capture_started_at_utc",
+        "finished_at_utc",
+        "latency_ms"
+      ],
+      "properties": {
+        "failed_at_utc": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?(Z|\\+00:00)$",
+              "maxLength": 32
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "accepted_at_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?(Z|\\+00:00)$",
+          "maxLength": 32
+        },
+        "capture_started_at_utc": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?(Z|\\+00:00)$",
+              "maxLength": 32
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "finished_at_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?(Z|\\+00:00)$",
+          "maxLength": 32
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "result_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_schema",
+        "capture_id",
+        "binding_record",
+        "binding_record_raw_json",
+        "binding_record_sha256",
+        "control_generation",
+        "supervisor_instance_id",
+        "cause_event_ids",
+        "initial_trigger_event_id",
+        "trigger_envelope",
+        "source_cutoff_seq",
+        "history_coverage",
+        "stages",
+        "observation_relation",
+        "timing",
+        "identity_checks",
+        "sanitization",
+        "worker_termination",
+        "policy_allowed",
+        "coverage_complete",
+        "report_context",
+        "document_markers"
+      ],
+      "properties": {
+        "profile_schema": {
+          "const": "cdpd.chatgpt-profile/v1"
+        },
+        "capture_id": {
+          "type": "string",
+          "pattern": "^C-[0-9a-f]{32}$",
+          "minLength": 34,
+          "maxLength": 34
+        },
+        "binding_record": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/binding"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "binding_record_raw_json": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 8192
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "binding_record_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "minLength": 64,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "control_generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "supervisor_instance_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        "cause_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "minLength": 36,
+            "maxLength": 36
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "initial_trigger_event_id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "minLength": 36,
+          "maxLength": 36
+        },
+        "trigger_envelope": {
+          "$ref": "#/$defs/envelope"
+        },
+        "source_cutoff_seq": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "history_coverage": {
+          "$ref": "#/$defs/history_coverage"
+        },
+        "stages": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "S0",
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "properties": {
+            "S0": {
+              "$ref": "#/$defs/stage"
+            },
+            "S1": {
+              "$ref": "#/$defs/stage"
+            },
+            "S2": {
+              "$ref": "#/$defs/stage"
+            },
+            "S3": {
+              "$ref": "#/$defs/stage"
+            }
+          }
+        },
+        "observation_relation": {
+          "enum": [
+            "SAME_DOCUMENT_VERIFIED",
+            "DIFFERENT_DOCUMENT",
+            "UNKNOWN",
+            "CURRENT_OBSERVATION"
+          ]
+        },
+        "timing": {
+          "$ref": "#/$defs/timing"
+        },
+        "identity_checks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "before",
+            "after",
+            "current",
+            "keeper",
+            "lease"
+          ],
+          "properties": {
+            "before": {
+              "type": "boolean"
+            },
+            "after": {
+              "type": "boolean"
+            },
+            "current": {
+              "type": "boolean"
+            },
+            "keeper": {
+              "type": "boolean"
+            },
+            "lease": {
+              "type": "boolean"
+            }
+          }
+        },
+        "sanitization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "passed",
+            "script_sha256",
+            "probe_catalog_sha256",
+            "allowlist_version"
+          ],
+          "properties": {
+            "passed": {
+              "type": "boolean"
+            },
+            "script_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "minLength": 64,
+              "maxLength": 64
+            },
+            "probe_catalog_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "minLength": 64,
+              "maxLength": 64
+            },
+            "allowlist_version": {
+              "const": "cdpd.chatgpt-safe-structure/v1"
+            }
+          }
+        },
+        "worker_termination": {
+          "enum": [
+            "NORMAL",
+            "KILLED",
+            "EXITED_ERROR",
+            "UNCONFIRMED",
+            "NOT_STARTED"
+          ]
+        },
+        "policy_allowed": {
+          "type": "boolean"
+        },
+        "coverage_complete": {
+          "type": "boolean"
+        },
+        "report_context": {
+          "$ref": "#/$defs/context"
+        },
+        "document_markers": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "trigger",
+            "before",
+            "after"
+          ],
+          "properties": {
+            "trigger": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "frame_id",
+                    "loader_id"
+                  ],
+                  "properties": {
+                    "frame_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256,
+                      "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                      "not": {
+                        "pattern": "[\\u0000-\\u001f\\u007f]"
+                      }
+                    },
+                    "loader_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256,
+                      "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                      "not": {
+                        "pattern": "[\\u0000-\\u001f\\u007f]"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "before": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "frame_id",
+                    "loader_id"
+                  ],
+                  "properties": {
+                    "frame_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256,
+                      "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                      "not": {
+                        "pattern": "[\\u0000-\\u001f\\u007f]"
+                      }
+                    },
+                    "loader_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256,
+                      "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                      "not": {
+                        "pattern": "[\\u0000-\\u001f\\u007f]"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "after": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "frame_id",
+                    "loader_id"
+                  ],
+                  "properties": {
+                    "frame_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256,
+                      "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                      "not": {
+                        "pattern": "[\\u0000-\\u001f\\u007f]"
+                      }
+                    },
+                    "loader_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 256,
+                      "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                      "not": {
+                        "pattern": "[\\u0000-\\u001f\\u007f]"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "capture_status",
+        "failure_code",
+        "assessment_status",
+        "started_utc",
+        "finished_utc",
+        "selected_scope",
+        "history_dropped_count",
+        "target_id",
+        "profile"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.capture-result/v1"
+        },
+        "capture_status": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "REJECTED"
+          ]
+        },
+        "failure_code": {
+          "anyOf": [
+            {
+              "enum": [
+                "BINDING_REVOKED",
+                "BROWSER_IDENTITY_MISMATCH",
+                "CAPTURE_DEADLINE",
+                "CAPTURE_FAILED",
+                "CDP_COMMAND_FAILED",
+                "CDP_CONNECT_FAILED",
+                "CDP_DISCOVERY_FAILED",
+                "CDP_DISCOVERY_TOO_LARGE",
+                "CDP_RESPONSE_TOO_LARGE",
+                "CLOCK_OR_KEEPER_LOST",
+                "COLLECTOR_EXCEPTION",
+                "COMMAND_NOT_ALLOWED",
+                "DISCONNECTED",
+                "ENDPOINT_NOT_ALLOWED",
+                "ENDPOINT_REDIRECT_REJECTED",
+                "FRAME_ORIGIN_UNVERIFIED",
+                "HISTORY_INCOMPLETE",
+                "INPUT_INVALID",
+                "KNOWN_CDP_LOSS",
+                "LEASE_EXPIRED",
+                "NAVIGATION_DURING_CAPTURE",
+                "NONE",
+                "NOT_RUN",
+                "NO_ACTIVE_BINDING",
+                "POLICY_DENIED",
+                "PRIVACY_OR_IDENTITY_FAILURE",
+                "SCRIPT_NOT_ALLOWED",
+                "SPOOL_BACKPRESSURE",
+                "STORAGE_ERROR",
+                "STRUCTURE_EVALUATION_FAILED",
+                "STRUCTURE_INVALID",
+                "SUPERVISOR_LOST",
+                "TARGET_BINDING_INVALID",
+                "TARGET_ORIGIN_MISMATCH",
+                "TRUNCATED",
+                "UNKNOWN",
+                "WORKER_FAILED_OR_DEADLINE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessment_status": {
+          "const": "NOT_PERFORMED"
+        },
+        "started_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?(Z|\\+00:00)$",
+          "maxLength": 32
+        },
+        "finished_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?(Z|\\+00:00)$",
+          "maxLength": 32
+        },
+        "selected_scope": {
+          "const": "MAIN_FRAME_AND_OPEN_SHADOW"
+        },
+        "history_dropped_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "target_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+              "not": {
+                "pattern": "[\\u0000-\\u001f\\u007f]"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "profile": {
+          "$ref": "#/$defs/result_profile"
+        }
+      }
+    },
+    "history_row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "received_utc",
+        "event",
+        "profile"
+      ],
+      "properties": {
+        "received_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?(Z|\\+00:00)$",
+          "maxLength": 32
+        },
+        "event": {
+          "$ref": "#/$defs/event"
+        },
+        "profile": {
+          "$ref": "#/$defs/envelope"
+        }
+      },
+      "$comment": "Must match trigger base stream. event_id is unique across derived domains; producer_seq order/duplicate identity is domain-specific. LIVENESS_SAMPLE cannot fill a DIAGNOSTIC_EVENT gap."
+    },
+    "events": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "events"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.events/v1"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/history_row"
+          },
+          "maxItems": 1000
+        }
+      }
+    },
+    "probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feature_id",
+        "match_count",
+        "visible_count",
+        "enabled_count",
+        "probe_complete"
+      ],
+      "properties": {
+        "feature_id": {
+          "enum": [
+            "composer.input",
+            "composer.send",
+            "generation.stop",
+            "attachment.input",
+            "response.container"
+          ]
+        },
+        "match_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000
+        },
+        "visible_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000
+        },
+        "enabled_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000
+        },
+        "probe_complete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "shape_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tag",
+        "role",
+        "parent",
+        "shadow"
+      ],
+      "properties": {
+        "tag": {
+          "enum": [
+            "div",
+            "span",
+            "input",
+            "textarea",
+            "button",
+            "form",
+            "section",
+            "article"
+          ]
+        },
+        "role": {
+          "anyOf": [
+            {
+              "enum": [
+                "textbox",
+                "button",
+                "form",
+                "region",
+                "group"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "shadow": {
+          "type": "boolean"
+        }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "parent",
+        "tag",
+        "role",
+        "shadowBoundary",
+        "disabled",
+        "hidden",
+        "visible",
+        "box"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1999
+        },
+        "parent": {
+          "type": "integer",
+          "minimum": -1,
+          "maximum": 1999
+        },
+        "tag": {
+          "enum": [
+            "html",
+            "head",
+            "body",
+            "div",
+            "span",
+            "main",
+            "section",
+            "article",
+            "aside",
+            "nav",
+            "header",
+            "footer",
+            "form",
+            "button",
+            "input",
+            "textarea",
+            "select",
+            "option",
+            "label",
+            "a",
+            "p",
+            "ul",
+            "ol",
+            "li",
+            "table",
+            "tbody",
+            "thead",
+            "tr",
+            "th",
+            "td",
+            "svg",
+            "path",
+            "g",
+            "img",
+            "canvas",
+            "video",
+            "audio",
+            "iframe",
+            "slot",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "br",
+            "hr",
+            "dialog",
+            "details",
+            "summary",
+            "fieldset",
+            "legend",
+            "#other"
+          ]
+        },
+        "role": {
+          "anyOf": [
+            {
+              "enum": [
+                "button",
+                "textbox",
+                "checkbox",
+                "radio",
+                "switch",
+                "link",
+                "menu",
+                "menuitem",
+                "list",
+                "listitem",
+                "tab",
+                "tablist",
+                "tabpanel",
+                "dialog",
+                "alert",
+                "status",
+                "progressbar",
+                "combobox",
+                "option",
+                "heading",
+                "navigation",
+                "main",
+                "region",
+                "group",
+                "presentation",
+                "none"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "shadowBoundary": {
+          "type": "boolean"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "hidden": {
+          "type": "boolean"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "box": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -1000000000,
+            "maximum": 1000000000
+          },
+          "maxItems": 4,
+          "minItems": 4
+        }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "nodes",
+        "truncated",
+        "iframeCount",
+        "openShadowCount",
+        "coverage",
+        "observation",
+        "binding",
+        "command_audit",
+        "profile"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.structure/v1"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          },
+          "maxItems": 2000
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "iframeCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000
+        },
+        "openShadowCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scope",
+            "iframeDocuments",
+            "closedShadow",
+            "accessibilityTree"
+          ],
+          "properties": {
+            "scope": {
+              "const": "MAIN_FRAME_AND_OPEN_SHADOW"
+            },
+            "iframeDocuments": {
+              "const": "NOT_CAPTURED"
+            },
+            "closedShadow": {
+              "const": "NOT_OBSERVABLE"
+            },
+            "accessibilityTree": {
+              "const": "NOT_CAPTURED"
+            }
+          }
+        },
+        "observation": {
+          "const": "STRUCTURE_ONLY_NOT_FUNCTIONAL_VERIFICATION"
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target_id",
+            "browser_id",
+            "origin",
+            "loader_id",
+            "binding_strength"
+          ],
+          "properties": {
+            "target_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+              "not": {
+                "pattern": "[\\u0000-\\u001f\\u007f]"
+              }
+            },
+            "browser_id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{32}$",
+              "minLength": 32,
+              "maxLength": 32
+            },
+            "origin": {
+              "const": "https://chatgpt.com"
+            },
+            "loader_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256,
+                  "pattern": "^[^\\u0000-\\u001f\\u007f]+$",
+                  "not": {
+                    "pattern": "[\\u0000-\\u001f\\u007f]"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "binding_strength": {
+              "const": "PINNED_BROWSER"
+            }
+          }
+        },
+        "command_audit": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "Target.getTargetInfo",
+              "Target.attachToTarget",
+              "Target.detachFromTarget",
+              "Page.getFrameTree",
+              "Page.createIsolatedWorld",
+              "Runtime.evaluate"
+            ]
+          },
+          "maxItems": 100
+        },
+        "profile": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "probes",
+            "feature_shapes"
+          ],
+          "properties": {
+            "probes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/probe"
+              },
+              "maxItems": 50
+            },
+            "feature_shapes": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [],
+              "properties": {
+                "composer.input": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/shape_node"
+                  },
+                  "maxItems": 2000
+                },
+                "composer.send": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/shape_node"
+                  },
+                  "maxItems": 2000
+                },
+                "generation.stop": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/shape_node"
+                  },
+                  "maxItems": 2000
+                },
+                "attachment.input": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/shape_node"
+                  },
+                  "maxItems": 2000
+                },
+                "response.container": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/shape_node"
+                  },
+                  "maxItems": 2000
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "manifest_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "enum": [
+            "TRIGGER.json",
+            "EVENTS.json",
+            "RESULT.json",
+            "STRUCTURE.json"
+          ]
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10485760
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "capture_id",
+        "files"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.bundle-manifest/v1"
+        },
+        "capture_id": {
+          "type": "string",
+          "pattern": "^C-[0-9a-f]{32}$",
+          "minLength": 34,
+          "maxLength": 34
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/manifest_entry"
+          },
+          "maxItems": 4,
+          "minItems": 3
+        }
+      }
+    },
+    "commit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "manifest_sha256"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.commit/v1"
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        }
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "TRIGGER.json",
+        "EVENTS.json",
+        "RESULT.json",
+        "MANIFEST.json",
+        "COMMIT.json"
+      ],
+      "properties": {
+        "TRIGGER.json": {
+          "$ref": "#/$defs/event"
+        },
+        "EVENTS.json": {
+          "$ref": "#/$defs/events"
+        },
+        "RESULT.json": {
+          "$ref": "#/$defs/result"
+        },
+        "STRUCTURE.json": {
+          "$ref": "#/$defs/structure"
+        },
+        "MANIFEST.json": {
+          "$ref": "#/$defs/manifest"
+        },
+        "COMMIT.json": {
+          "$ref": "#/$defs/commit"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "STRUCTURE.json"
+            ]
+          },
+          "then": {
+            "properties": {
+              "RESULT.json": {
+                "properties": {
+                  "profile": {
+                    "properties": {
+                      "stages": {
+                        "properties": {
+                          "S1": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "COMPLETE"
+                                  },
+                                  "reason_code": {
+                                    "type": "null"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "PARTIAL"
+                                  },
+                                  "reason_code": {
+                                    "const": "TRUNCATED"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "S2": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "COMPLETE"
+                                  },
+                                  "reason_code": {
+                                    "type": "null"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "const": "PARTIAL"
+                                  },
+                                  "reason_code": {
+                                    "const": "TRUNCATED"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,3 @@
+# Exact inherited Python test dependency pins plus the narrow L06 transport.
+-r requirements-l04-synthetic.txt
+websocket-client==1.8.0

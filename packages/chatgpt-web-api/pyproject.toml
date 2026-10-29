@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chatgpt-web-api"
+version = "0.2.1"
+description = "Standalone non-official ChatGPT Web UI adapter"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+browser = ["playwright>=1.59,<2"]
+
+[project.scripts]
+chatgpt-web-api = "chatgpt_web_api.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

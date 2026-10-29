@@ -1,0 +1,54 @@
+# Local secrets, credentials, browser and service state
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.kdbx
+credentials.json
+secrets.json
+**/chrome-profile/
+**/chrome-user-data/
+**/user-data-dir/
+
+# Evidence, assessments, previous candidate archives, local runtime
+/evidence/
+/history/
+/assessment/
+/source_snapshots/
+/inputs/
+!/inputs/
+/inputs/*
+!/inputs/fix008_synthetic_fixture_baseline/
+/references/*.zip
+*.zip
+*.gz
+*.log
+*.stdout.txt
+*.stderr.txt
+*.execution.json
+*.sqlite
+*.db
+
+# Generated Python and build artefacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

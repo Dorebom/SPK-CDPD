@@ -1,0 +1,303 @@
+{
+  "schema": "cdpd.chatgpt-diagnostic-event-matrix/v1",
+  "status": "CANDIDATE",
+  "ticket_id": "CDPD-L02",
+  "generic_event_schema": "cdpd.event/v1",
+  "generic_event_enum_modified": false,
+  "unknown_pair_policy": "REJECT_WITH_FIXED_CODE_NO_BROWSER",
+  "global_precedence": [
+    "POLICY_DENIED",
+    "BINDING_INVALID_OR_EXPIRED",
+    "PRIVACY_OR_INTEGRITY_FAILURE",
+    "WORKER_FAILURE",
+    "STRUCTURE_COLLECTION"
+  ],
+  "rules": [
+    {
+      "case_id": "EVT-01",
+      "event_kind": "ACTION_STARTED",
+      "failure_code": "NONE",
+      "profile_reason": "OPERATION_ARMED",
+      "capture_mode": "NONE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "POSSIBLY_DISPATCHED",
+      "recursive_capture": false,
+      "description": "開始S0を永続ACK後にのみproviderへ最大1回。送信可能性を保守的に立てる。"
+    },
+    {
+      "case_id": "EVT-02",
+      "event_kind": "ACTION_FINISHED",
+      "failure_code": "NONE",
+      "profile_reason": "OPERATION_FINISHED",
+      "capture_mode": "NONE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "CALLER_DECIDES",
+      "recursive_capture": false,
+      "description": "戻り値を維持。診断の成功でWORK成功にしない。"
+    },
+    {
+      "case_id": "EVT-03",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "TARGET_MISSING",
+      "profile_reason": "LOCATOR_NOT_FOUND",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "RECONCILE_IF_DISPATCHED",
+      "recursive_capture": false,
+      "description": "要素0件。タブ喪失とは区別。"
+    },
+    {
+      "case_id": "EVT-04",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "TARGET_AMBIGUOUS",
+      "profile_reason": "LOCATOR_MULTI_MATCH",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "RECONCILE_IF_DISPATCHED",
+      "recursive_capture": false,
+      "description": "要素複数一致。ページ集合違反とは区別。"
+    },
+    {
+      "case_id": "EVT-05",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "NOT_INTERACTABLE",
+      "profile_reason": "ELEMENT_NOT_INTERACTABLE",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "RECONCILE_IF_DISPATCHED",
+      "recursive_capture": false,
+      "description": "非表示・disabled・遮蔽の候補。クリックで検査しない。"
+    },
+    {
+      "case_id": "EVT-06",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "TIMEOUT",
+      "profile_reason": "ACTION_TIMEOUT",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "RECONCILE_IF_DISPATCHED",
+      "recursive_capture": false,
+      "description": "再実行せず捕捉可能な構造を要求。"
+    },
+    {
+      "case_id": "EVT-07",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "TIMEOUT",
+      "profile_reason": "OBSERVATION_TIMEOUT",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "RECONCILE_IF_DISPATCHED",
+      "recursive_capture": false,
+      "description": "観測TimeoutはDOM変更や生成失敗の確定ではない。"
+    },
+    {
+      "case_id": "EVT-08",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "UNKNOWN",
+      "profile_reason": "OBSERVATION_UNDETERMINED",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "RECONCILE_IF_DISPATCHED",
+      "recursive_capture": false,
+      "description": "不明・矛盾した状態。本文は送らない。"
+    },
+    {
+      "case_id": "EVT-09",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "DISCONNECTED",
+      "profile_reason": "CDP_CHANNEL_LOST",
+      "capture_mode": "METADATA_ONLY",
+      "binding_effect": "INVALIDATE",
+      "operation_overlay": "STOP",
+      "recursive_capture": false,
+      "description": "既知のCDP断はL01に従いラッチし自動再接続しない。"
+    },
+    {
+      "case_id": "EVT-10",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "TARGET_MISSING",
+      "profile_reason": "TARGET_IDENTITY_MISMATCH",
+      "capture_mode": "METADATA_ONLY",
+      "binding_effect": "INVALIDATE",
+      "operation_overlay": "STOP",
+      "recursive_capture": false,
+      "description": "browser epoch/Target ID/Origin相違。"
+    },
+    {
+      "case_id": "EVT-11",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "TARGET_AMBIGUOUS",
+      "profile_reason": "PAGE_SET_VIOLATION",
+      "capture_mode": "METADATA_ONLY",
+      "binding_effect": "INVALIDATE",
+      "operation_overlay": "STOP",
+      "recursive_capture": false,
+      "description": "2ページ目・非ChatGPTページ併存。"
+    },
+    {
+      "case_id": "EVT-12",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "TIMEOUT",
+      "profile_reason": "HEARTBEAT_EXPIRED",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP_IF_PROVEN",
+      "operation_overlay": "DIAGNOSTIC_ONLY",
+      "recursive_capture": false,
+      "description": "consumer生存停止を断定せず、監視側が保持した有効Bindingのみ診断。"
+    },
+    {
+      "case_id": "EVT-13",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "UNKNOWN",
+      "profile_reason": "CONSUMER_EXITED",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP_IF_PROVEN",
+      "operation_overlay": "DIAGNOSTIC_ONLY",
+      "recursive_capture": false,
+      "description": "所有process handleで終了確認。時計keeperが生きている場合のみ。"
+    },
+    {
+      "case_id": "EVT-14",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "DISCONNECTED",
+      "profile_reason": "CHROME_EXITED",
+      "capture_mode": "METADATA_ONLY",
+      "binding_effect": "INVALIDATE",
+      "operation_overlay": "STOP",
+      "recursive_capture": false,
+      "description": "ブラウザを再起動しない。"
+    },
+    {
+      "case_id": "EVT-15",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "UNKNOWN",
+      "profile_reason": "WORKER_FAILED",
+      "capture_mode": "METADATA_ONLY",
+      "binding_effect": "REVALIDATE_LATER",
+      "operation_overlay": "STOP",
+      "recursive_capture": false,
+      "description": "当該要求を閉じる。失敗イベントからworkerを再起動しない。"
+    },
+    {
+      "case_id": "EVT-16",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "TIMEOUT",
+      "profile_reason": "WORKER_DEADLINE",
+      "capture_mode": "METADATA_ONLY",
+      "binding_effect": "REVALIDATE_LATER",
+      "operation_overlay": "STOP",
+      "recursive_capture": false,
+      "description": "workerのみ停止、未確定DOM破棄。"
+    },
+    {
+      "case_id": "EVT-17",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "UNKNOWN",
+      "profile_reason": "SPOOL_BACKPRESSURE",
+      "capture_mode": "NONE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "BLOCK_NEXT_OPERATION",
+      "recursive_capture": false,
+      "description": "入場拒否と欠落件数。自己診断から再帰採取しない。"
+    },
+    {
+      "case_id": "EVT-18",
+      "event_kind": "MANUAL",
+      "failure_code": "NONE",
+      "profile_reason": "MANUAL_CAPTURE",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "NO_MUTATION",
+      "recursive_capture": false,
+      "description": "人/承認された起動元の明示要求。"
+    },
+    {
+      "case_id": "EVT-19",
+      "event_kind": "MANUAL",
+      "failure_code": "NONE",
+      "profile_reason": "SCHEDULED_CAPTURE",
+      "capture_mode": "GUARDED_STRUCTURE_IF_IDLE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "NO_MUTATION",
+      "recursive_capture": false,
+      "description": "有効な既存BindingがなければUNKNOWN。新Bindingを発行しない。"
+    },
+    {
+      "case_id": "EVT-20",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "RECONCILE_REQUIRED",
+      "profile_reason": "SUBMISSION_UNCERTAIN",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "RECONCILIATION_REQUIRED",
+      "recursive_capture": false,
+      "description": "古いoperation_idを保持。retryへの変換禁止。"
+    },
+    {
+      "case_id": "EVT-21",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "UNKNOWN",
+      "profile_reason": "CLOCK_OR_KEEPER_LOST",
+      "capture_mode": "METADATA_ONLY",
+      "binding_effect": "INVALIDATE",
+      "operation_overlay": "STOP",
+      "recursive_capture": false,
+      "description": "supervisor再起動・時計不連続・keeper不在。"
+    },
+    {
+      "case_id": "EVT-22",
+      "event_kind": "OBSERVATION_FAILED",
+      "failure_code": "UNKNOWN",
+      "profile_reason": "NAVIGATION_DURING_CAPTURE",
+      "capture_mode": "METADATA_ONLY",
+      "binding_effect": "L01_NAVIGATION",
+      "operation_overlay": "STOP",
+      "recursive_capture": false,
+      "description": "当該要求の未commit構造を全破棄。同じBの次の明示要求のみ。"
+    },
+    {
+      "case_id": "EVT-23",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "POSTCONDITION_FAILED",
+      "profile_reason": "POSTCONDITION_FAILED",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "RECONCILE_IF_DISPATCHED",
+      "recursive_capture": false,
+      "description": "事後条件未成立。業務失敗か否かはconsumer判断。"
+    },
+    {
+      "case_id": "EVT-24",
+      "event_kind": "HEARTBEAT",
+      "failure_code": "NONE",
+      "profile_reason": "HEARTBEAT_SAMPLE",
+      "capture_mode": "NONE",
+      "binding_effect": "KEEP",
+      "operation_overlay": "NO_CHANGE",
+      "recursive_capture": false,
+      "description": "transport用heartbeatは別sequence/mailbox。履歴に採用する場合のみこのeventを使う。"
+    },
+    {
+      "case_id": "EVT-25",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "UNKNOWN",
+      "profile_reason": "PROVIDER_FAILURE_UNCLASSIFIED",
+      "capture_mode": "GUARDED_STRUCTURE",
+      "binding_effect": "KEEP_IF_PROVEN",
+      "operation_overlay": "RECONCILE_IF_DISPATCHED",
+      "recursive_capture": false,
+      "description": "Provider例外・未分類failure resultの共通入口。元例外/戻り値を保持し本文を出さない。UNKNOWN/POSSIBLEな送出状態を未送出に変えず、同一Binding guardで採取可否を判定。"
+    },
+    {
+      "case_id": "EVT-26",
+      "event_kind": "ACTION_FAILED",
+      "failure_code": "DISCONNECTED",
+      "profile_reason": "PROVIDER_DISCONNECTED",
+      "capture_mode": "METADATA_ONLY",
+      "binding_effect": "INVALIDATE",
+      "operation_overlay": "STOP",
+      "recursive_capture": false,
+      "description": "継承Adapterの既知DISCONNECTED。kind/failure/result/相関を維持。CDP断の固定通知としてBindingを失効し新mutation停止。再接続・再送・構造採取なし。"
+    }
+  ]
+}

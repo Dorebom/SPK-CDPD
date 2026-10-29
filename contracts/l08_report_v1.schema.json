@@ -1,0 +1,591 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdpd:l08-report:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "ticket_id",
+    "observation_mode",
+    "capture_id",
+    "hash_scope",
+    "before_sha256",
+    "after_sha256",
+    "source_commit_sha256",
+    "before_normalized_sha256",
+    "after_normalized_sha256",
+    "baseline_status",
+    "failed_checks",
+    "report"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cdpd.l08.report/v1"
+    },
+    "ticket_id": {
+      "const": "CDPD-L08"
+    },
+    "observation_mode": {
+      "const": "OFFLINE_REPLAY"
+    },
+    "capture_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^C-[0-9a-f]{32}$",
+      "minLength": 34,
+      "maxLength": 34
+    },
+    "hash_scope": {
+      "const": "BUNDLE_MANIFEST_SHA256"
+    },
+    "before_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "after_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "source_commit_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "before_normalized_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "after_normalized_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "baseline_status": {
+      "enum": [
+        "APPROVED",
+        "BASELINE_UNAPPROVED"
+      ]
+    },
+    "failed_checks": {
+      "type": "array",
+      "maxItems": 13,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "check_id",
+          "reason_code",
+          "verdict"
+        ],
+        "properties": {
+          "check_id": {
+            "enum": [
+              "BUNDLE_INTEGRITY",
+              "CAPTURE_COMPLETENESS",
+              "CAPTURE_POLICY",
+              "BINDING_VERIFICATION",
+              "COVERAGE_AND_HISTORY",
+              "BASELINE_APPROVAL",
+              "CONTEXT_COMPARABILITY",
+              "CATALOG_AND_POLICY",
+              "DOCUMENT_RELATION",
+              "APPLICABLE_PROBE_COMPLETENESS",
+              "REQUIRED_EVIDENCE",
+              "REQUIRED_FUNCTION",
+              "NONBREAKING_DRIFT"
+            ]
+          },
+          "reason_code": {
+            "enum": [
+              "INTEGRITY_INVALID",
+              "CAPTURE_NOT_COMPLETE",
+              "POLICY_NOT_ALLOWED",
+              "BINDING_NOT_VERIFIED",
+              "REQUIRED_COVERAGE_MISSING",
+              "BASELINE_UNAPPROVED",
+              "CONTEXT_NOT_COMPARABLE",
+              "CATALOG_NOT_COMPARABLE",
+              "DOCUMENT_RELATION_UNKNOWN",
+              "REQUIRED_PROBE_INCOMPLETE",
+              "REQUIRED_EVIDENCE_MISSING",
+              "REQUIRED_FUNCTION_VIOLATED",
+              "SIGNIFICANT_DRIFT"
+            ]
+          },
+          "verdict": {
+            "enum": [
+              "UNKNOWN",
+              "BREAKING",
+              "REVIEW"
+            ]
+          }
+        }
+      }
+    },
+    "report": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "urn:cdpd:chatgpt-report:v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "scope",
+        "assessment_status",
+        "capture_status",
+        "source_manifest_sha256",
+        "baseline_manifest_sha256",
+        "baseline_approved",
+        "context_comparable",
+        "coverage_complete",
+        "reason_codes",
+        "findings",
+        "automatic_action",
+        "context_recipe",
+        "catalog_sha256",
+        "normalization_sha256",
+        "not_proven",
+        "hypothesis_code",
+        "confidence",
+        "recommended_action"
+      ],
+      "properties": {
+        "schema": {
+          "const": "cdpd.chatgpt-report/v1"
+        },
+        "scope": {
+          "const": "STATIC_UI_CONTRACT_COMPATIBILITY_NOT_BUSINESS_SUCCESS"
+        },
+        "assessment_status": {
+          "enum": [
+            "PASS",
+            "REVIEW",
+            "BREAKING",
+            "UNKNOWN"
+          ]
+        },
+        "capture_status": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "REJECTED",
+            "NOT_CAPTURED"
+          ]
+        },
+        "source_manifest_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "baseline_manifest_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "baseline_approved": {
+          "type": "boolean"
+        },
+        "context_comparable": {
+          "type": "boolean"
+        },
+        "coverage_complete": {
+          "type": "boolean"
+        },
+        "reason_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "INTEGRITY_INVALID",
+              "CAPTURE_NOT_COMPLETE",
+              "POLICY_NOT_ALLOWED",
+              "BINDING_NOT_VERIFIED",
+              "REQUIRED_COVERAGE_MISSING",
+              "BASELINE_NOT_APPROVED",
+              "CONTEXT_NOT_COMPARABLE",
+              "CATALOG_NOT_COMPARABLE",
+              "DOCUMENT_RELATION_UNKNOWN",
+              "REQUIRED_PROBE_INCOMPLETE",
+              "REQUIRED_EVIDENCE_MISSING",
+              "REQUIRED_FUNCTION_VIOLATED",
+              "SIGNIFICANT_DRIFT"
+            ]
+          }
+        },
+        "findings": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "feature_id",
+              "verdict",
+              "evidence_pointer",
+              "reason_code",
+              "required",
+              "observed",
+              "expected",
+              "baseline_pointer",
+              "coverage_pointer"
+            ],
+            "properties": {
+              "feature_id": {
+                "enum": [
+                  "composer.input",
+                  "composer.send",
+                  "generation.stop",
+                  "attachment.input",
+                  "response.container"
+                ]
+              },
+              "verdict": {
+                "enum": [
+                  "PASS",
+                  "REVIEW",
+                  "BREAKING",
+                  "UNKNOWN",
+                  "NOT_APPLICABLE"
+                ]
+              },
+              "evidence_pointer": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^STRUCTURE\\.json#/profile/probes/[0-9]+$",
+                    "not": {
+                      "pattern": "[\\r\\n]"
+                    }
+                  }
+                ]
+              },
+              "reason_code": {
+                "enum": [
+                  "CONTRACT_SATISFIED",
+                  "REQUIRED_FUNCTION_VIOLATED",
+                  "OPTIONAL_FUNCTION_DRIFT",
+                  "PROBE_INCOMPLETE",
+                  "NOT_APPLICABLE"
+                ]
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "observed": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "match_count",
+                      "visible_count",
+                      "enabled_count",
+                      "probe_complete"
+                    ],
+                    "properties": {
+                      "match_count": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 2000
+                      },
+                      "visible_count": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 2000
+                      },
+                      "enabled_count": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 2000
+                      },
+                      "probe_complete": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "expected": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "match_min",
+                      "match_max",
+                      "visible_min",
+                      "enabled_min"
+                    ],
+                    "properties": {
+                      "match_min": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 2000
+                      },
+                      "match_max": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ],
+                        "minimum": 0,
+                        "maximum": 2000
+                      },
+                      "visible_min": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 2000
+                      },
+                      "enabled_min": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 2000
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "baseline_pointer": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^STRUCTURE\\.json#/profile/probes/[0-9]+$",
+                    "not": {
+                      "pattern": "[\\r\\n]"
+                    }
+                  }
+                ]
+              },
+              "coverage_pointer": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^RESULT\\.json#/profile/coverage_complete$",
+                    "not": {
+                      "pattern": "[\\r\\n]"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "automatic_action": {
+          "const": "NONE"
+        },
+        "context_recipe": {
+          "enum": [
+            "IDLE_EMPTY",
+            "IDLE_INPUT_PRESENT",
+            "GENERATING",
+            "RESPONSE_READY",
+            "UNDETERMINED"
+          ]
+        },
+        "catalog_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "minLength": 64,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "normalization_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "minLength": 64,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "not_proven": {
+          "const": [
+            "SEND_SUCCESS",
+            "RESPONSE_CONTENT_CORRECT",
+            "RESPONSE_CAUSAL_IDENTITY",
+            "DOWNLOAD_CORRECT",
+            "WORK_SUCCESS"
+          ]
+        },
+        "hypothesis_code": {
+          "const": "NOT_EVALUATED"
+        },
+        "confidence": {
+          "const": "NOT_ESTIMATED"
+        },
+        "recommended_action": {
+          "enum": [
+            "NONE",
+            "REVIEW_FEATURE_CONTRACT",
+            "REVIEW_NONBREAKING_DRIFT",
+            "COLLECT_OR_VERIFY_EVIDENCE"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "assessment_status": {
+                "enum": [
+                  "PASS",
+                  "REVIEW",
+                  "BREAKING"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "capture_status": {
+                "const": "COMPLETE"
+              },
+              "baseline_approved": {
+                "const": true
+              },
+              "context_comparable": {
+                "const": true
+              },
+              "coverage_complete": {
+                "const": true
+              },
+              "source_manifest_sha256": {
+                "type": "string"
+              },
+              "baseline_manifest_sha256": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "assessment_status": {
+                "enum": [
+                  "PASS",
+                  "REVIEW",
+                  "BREAKING"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason_codes": {
+                "not": {
+                  "contains": {
+                    "enum": [
+                      "INTEGRITY_INVALID",
+                      "CAPTURE_NOT_COMPLETE",
+                      "POLICY_NOT_ALLOWED",
+                      "BINDING_NOT_VERIFIED",
+                      "REQUIRED_COVERAGE_MISSING",
+                      "BASELINE_NOT_APPROVED",
+                      "CONTEXT_NOT_COMPARABLE",
+                      "CATALOG_NOT_COMPARABLE",
+                      "DOCUMENT_RELATION_UNKNOWN",
+                      "REQUIRED_PROBE_INCOMPLETE",
+                      "REQUIRED_EVIDENCE_MISSING"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "assessment_status": {
+                "const": "PASS"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reason_codes": {
+                "maxItems": 0
+              },
+              "recommended_action": {
+                "const": "NONE"
+              },
+              "findings": {
+                "not": {
+                  "contains": {
+                    "properties": {
+                      "verdict": {
+                        "enum": [
+                          "BREAKING",
+                          "UNKNOWN",
+                          "REVIEW"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

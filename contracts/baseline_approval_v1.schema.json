@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdpd:chatgpt-baseline-approval:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "decision",
+    "approver_id",
+    "approved_utc",
+    "previous_manifest_sha256",
+    "source_manifest_sha256",
+    "normalized_profile_sha256",
+    "recipe",
+    "catalog_sha256",
+    "normalization_sha256",
+    "policy_sha256",
+    "locale_class",
+    "viewport_class",
+    "browser_profile"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cdpd.chatgpt-baseline-approval/v1"
+    },
+    "decision": {
+      "const": "APPROVE"
+    },
+    "approver_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "approved_utc": {
+      "type": "string",
+      "format": "date-time",
+      "minLength": 20,
+      "maxLength": 40
+    },
+    "previous_manifest_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "normalized_profile_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "recipe": {
+      "enum": [
+        "IDLE_EMPTY",
+        "IDLE_INPUT_PRESENT",
+        "GENERATING",
+        "RESPONSE_READY"
+      ]
+    },
+    "catalog_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "normalization_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "policy_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "locale_class": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{2,8}(-[A-Za-z0-9]{1,8})*$",
+      "maxLength": 35
+    },
+    "viewport_class": {
+      "enum": [
+        "desktop",
+        "tablet",
+        "mobile",
+        "unknown"
+      ]
+    },
+    "browser_profile": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]{1,128}$",
+      "maxLength": 128
+    }
+  }
+}

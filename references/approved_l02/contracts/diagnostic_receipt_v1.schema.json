@@ -1,0 +1,392 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cdpd:chatgpt-receipt:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "event_id",
+    "payload_sha256",
+    "stage",
+    "journal_seq",
+    "capture_id",
+    "failure_code",
+    "journal_record_sha256",
+    "ack_purpose",
+    "current_projection"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cdpd.chatgpt-receipt/v1"
+    },
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "minLength": 36,
+      "maxLength": 36
+    },
+    "payload_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "stage": {
+      "enum": [
+        "MEMORY_ACCEPTED",
+        "LOCAL_PUBLISHED",
+        "ACK_DURABLE",
+        "CAPTURE_ACCEPTED",
+        "REJECTED",
+        "UNKNOWN"
+      ]
+    },
+    "journal_seq": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "capture_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^C-[0-9a-f]{32}$"
+    },
+    "failure_code": {
+      "enum": [
+        null,
+        "INPUT_INVALID",
+        "EVENT_ID_CONFLICT",
+        "ADMISSION_EXPIRED",
+        "CURRENT_NOT_DURABLE",
+        "CURRENT_MISMATCH",
+        "JOURNAL_HASH_MISMATCH",
+        "BINDING_INVALID",
+        "SPOOL_BACKPRESSURE",
+        "STORAGE_ERROR",
+        "PERMISSION_DENIED",
+        "UNKNOWN"
+      ]
+    },
+    "journal_record_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ack_purpose": {
+      "enum": [
+        "EVENT_DURABILITY",
+        "OPERATION_ADMISSION",
+        "CAPTURE_RESERVATION"
+      ]
+    },
+    "current_projection": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "supervisor_instance_id",
+            "control_generation",
+            "binding_id",
+            "binding_sha256",
+            "operation_id",
+            "armed_event_id",
+            "current_sha256"
+          ],
+          "properties": {
+            "supervisor_instance_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+              "minLength": 36,
+              "maxLength": 36
+            },
+            "control_generation": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "binding_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+              "minLength": 36,
+              "maxLength": 36
+            },
+            "binding_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "minLength": 64,
+              "maxLength": 64
+            },
+            "operation_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "not": {
+                "pattern": "[\\u0000-\\u001f\\u007f]"
+              }
+            },
+            "armed_event_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+              "minLength": 36,
+              "maxLength": 36
+            },
+            "current_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "minLength": 64,
+              "maxLength": 64
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "stage": {
+            "enum": [
+              "ACK_DURABLE",
+              "CAPTURE_ACCEPTED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "journal_seq": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "journal_record_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "failure_code": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "journal_seq": {
+            "type": "null"
+          },
+          "journal_record_sha256": {
+            "type": "null"
+          },
+          "current_projection": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stage": {
+            "const": "CAPTURE_ACCEPTED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "capture_id": {
+            "type": "string"
+          },
+          "ack_purpose": {
+            "const": "CAPTURE_RESERVATION"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "capture_id": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ack_purpose": {
+            "const": "CAPTURE_RESERVATION"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "stage": {
+            "enum": [
+              "CAPTURE_ACCEPTED",
+              "REJECTED",
+              "UNKNOWN"
+            ]
+          },
+          "current_projection": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ack_purpose": {
+            "const": "OPERATION_ADMISSION"
+          },
+          "stage": {
+            "const": "ACK_DURABLE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "current_projection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "supervisor_instance_id",
+              "control_generation",
+              "binding_id",
+              "binding_sha256",
+              "operation_id",
+              "armed_event_id",
+              "current_sha256"
+            ],
+            "properties": {
+              "supervisor_instance_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "minLength": 36,
+                "maxLength": 36
+              },
+              "control_generation": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "binding_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "minLength": 36,
+                "maxLength": 36
+              },
+              "binding_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+                "minLength": 64,
+                "maxLength": 64
+              },
+              "operation_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256,
+                "not": {
+                  "pattern": "[\\u0000-\\u001f\\u007f]"
+                }
+              },
+              "armed_event_id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "minLength": 36,
+                "maxLength": 36
+              },
+              "current_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+                "minLength": 64,
+                "maxLength": 64
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "current_projection": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stage": {
+            "enum": [
+              "MEMORY_ACCEPTED",
+              "LOCAL_PUBLISHED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ack_purpose": {
+            "const": "EVENT_DURABILITY"
+          },
+          "failure_code": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stage": {
+            "enum": [
+              "REJECTED",
+              "UNKNOWN"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "failure_code": {
+            "enum": [
+              "INPUT_INVALID",
+              "EVENT_ID_CONFLICT",
+              "ADMISSION_EXPIRED",
+              "CURRENT_NOT_DURABLE",
+              "CURRENT_MISMATCH",
+              "JOURNAL_HASH_MISMATCH",
+              "BINDING_INVALID",
+              "SPOOL_BACKPRESSURE",
+              "STORAGE_ERROR",
+              "PERMISSION_DENIED",
+              "UNKNOWN"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

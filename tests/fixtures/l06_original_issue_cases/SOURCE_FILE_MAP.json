@@ -1,0 +1,380 @@
+{
+  "schema": "cdpd.l06.original-issue-case-fixtures/v1",
+  "archive": "references/ASSESSMENT_FIX003.zip in STATE003",
+  "archive_sha256": "1f392d4636238c312801907bd83c69814da1a73937efa8529a35b4ada3e85a13",
+  "scope": "Exact historical synthetic bytes; not Human approval or current live evidence",
+  "files": [
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/FORGED_PASS_NOT_APPROVED.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/FORGED_PASS_NOT_APPROVED.json",
+      "bytes": 2602,
+      "sha256": "0bcd7682f9d6b0e0976562a60bd073967e2242aedc74193dfab822ce518cf698"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/OBSERVATION.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/OBSERVATION.json",
+      "bytes": 867,
+      "sha256": "4267efa32f132f796467d8c2abb446ea4b5612e1a616ca462da970d58371d8ef"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/REPORT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/REPORT.json",
+      "bytes": 2478,
+      "sha256": "3e4712d7076e69594d500043070a5330c72dcb55316560822aa39f964cece36f"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/TRUSTED_MOCK_APPROVAL_NOT_HUMAN.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/TRUSTED_MOCK_APPROVAL_NOT_HUMAN.json",
+      "bytes": 504,
+      "sha256": "f98c008aab0f2e9e533a1a551cdc80ff06a0da2b0f517a36a6234d48f0d37108"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/COMMIT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/COMMIT.json",
+      "bytes": 112,
+      "sha256": "017e151968f088b147ffc55aab55868a17bad5f0051e09066092397918fbfde7"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/EVENTS.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/EVENTS.json",
+      "bytes": 39,
+      "sha256": "b17535df1676fba0934f40e0333cecb8453f380eafee48de333ba551b0ad8734"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/MANIFEST.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/MANIFEST.json",
+      "bytes": 545,
+      "sha256": "d944d1b6a856778bdae4ddfecbb523081e1bea41d9f341cab7da40782705c180"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/RESULT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/RESULT.json",
+      "bytes": 4156,
+      "sha256": "8faf89c5125e919c819326ccaf4e26ebbd80f7471df4da4657bb8416feeec1ee"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/STRUCTURE.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/STRUCTURE.json",
+      "bytes": 1729,
+      "sha256": "5bb39d189f10fbe399edeaa34c627ab90247f58b30021df0e6bc221c18f6c2a4"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/TRIGGER.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/baseline_bundle/TRIGGER.json",
+      "bytes": 210,
+      "sha256": "b9cc24fbbd87a665c97d6dbe9ce5135a0d3248a89df07e096cf2b25b7502cdde"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/COMMIT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/COMMIT.json",
+      "bytes": 112,
+      "sha256": "a59f887173190c5763c1bcf00ce77a2acb02566485eae4353f68eba585c48e26"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/EVENTS.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/EVENTS.json",
+      "bytes": 39,
+      "sha256": "b17535df1676fba0934f40e0333cecb8453f380eafee48de333ba551b0ad8734"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/MANIFEST.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/MANIFEST.json",
+      "bytes": 430,
+      "sha256": "26a4e6ba53f2f1bab5d993e67693b4ebdaaa5bf83171d863e534d346cbe3fd4a"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/RESULT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/RESULT.json",
+      "bytes": 4046,
+      "sha256": "9624c13ebf2c55155f317226bcd3c5b46fd70a8b505a347d6392830edfe4273e"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/TRIGGER.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_source/source_bundle/TRIGGER.json",
+      "bytes": 210,
+      "sha256": "b9cc24fbbd87a665c97d6dbe9ce5135a0d3248a89df07e096cf2b25b7502cdde"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/FORGED_PASS_NOT_APPROVED.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/FORGED_PASS_NOT_APPROVED.json",
+      "bytes": 2602,
+      "sha256": "719cf6d6a928ef581d1b547e9aebd367a6b696366eb088bf4f0bb997fcf26a3d"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/OBSERVATION.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/OBSERVATION.json",
+      "bytes": 773,
+      "sha256": "783985f9d6e67ab8d4d96dc6e09d6a678dd72a59b63b58203d0f9a6efb608568"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/REPORT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/REPORT.json",
+      "bytes": 2589,
+      "sha256": "90277376aa5d1e6d77bdb4115e86f71dd111b4e08c005c35f17ba9b57d49079b"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/TRUSTED_MOCK_APPROVAL_NOT_HUMAN.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/TRUSTED_MOCK_APPROVAL_NOT_HUMAN.json",
+      "bytes": 504,
+      "sha256": "fc0bb355390b00909342bd3ccf2f8486b88c3ecb64fa357e20cb81198bd3237c"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/COMMIT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/COMMIT.json",
+      "bytes": 112,
+      "sha256": "a59f887173190c5763c1bcf00ce77a2acb02566485eae4353f68eba585c48e26"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/EVENTS.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/EVENTS.json",
+      "bytes": 39,
+      "sha256": "b17535df1676fba0934f40e0333cecb8453f380eafee48de333ba551b0ad8734"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/MANIFEST.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/MANIFEST.json",
+      "bytes": 430,
+      "sha256": "26a4e6ba53f2f1bab5d993e67693b4ebdaaa5bf83171d863e534d346cbe3fd4a"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/RESULT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/RESULT.json",
+      "bytes": 4046,
+      "sha256": "9624c13ebf2c55155f317226bcd3c5b46fd70a8b505a347d6392830edfe4273e"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/TRIGGER.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/baseline_bundle/TRIGGER.json",
+      "bytes": 210,
+      "sha256": "b9cc24fbbd87a665c97d6dbe9ce5135a0d3248a89df07e096cf2b25b7502cdde"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/COMMIT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/COMMIT.json",
+      "bytes": 112,
+      "sha256": "017e151968f088b147ffc55aab55868a17bad5f0051e09066092397918fbfde7"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/EVENTS.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/EVENTS.json",
+      "bytes": 39,
+      "sha256": "b17535df1676fba0934f40e0333cecb8453f380eafee48de333ba551b0ad8734"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/MANIFEST.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/MANIFEST.json",
+      "bytes": 545,
+      "sha256": "d944d1b6a856778bdae4ddfecbb523081e1bea41d9f341cab7da40782705c180"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/RESULT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/RESULT.json",
+      "bytes": 4156,
+      "sha256": "8faf89c5125e919c819326ccaf4e26ebbd80f7471df4da4657bb8416feeec1ee"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/STRUCTURE.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/STRUCTURE.json",
+      "bytes": 1729,
+      "sha256": "5bb39d189f10fbe399edeaa34c627ab90247f58b30021df0e6bc221c18f6c2a4"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/TRIGGER.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/supplement_metadata_NOT_RUN_reason_None_baseline/source_bundle/TRIGGER.json",
+      "bytes": 210,
+      "sha256": "b9cc24fbbd87a665c97d6dbe9ce5135a0d3248a89df07e096cf2b25b7502cdde"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/FORGED_PASS_NOT_APPROVED.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/FORGED_PASS_NOT_APPROVED.json",
+      "bytes": 2602,
+      "sha256": "14b67d60caf1cece706bebac3a884db0f161bf84ac1e3632d7c2ae6000841e50"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/OBSERVATION.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/OBSERVATION.json",
+      "bytes": 762,
+      "sha256": "3166ceab75be2ee6da00a874f55ce9e3e6638ebb1f91f2d73208a7d7b649ed4f"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/REPORT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/REPORT.json",
+      "bytes": 2677,
+      "sha256": "accf039707ac91c1444a8787040b71bd3c8cf9685f5a19d8fb14a4a108abf5f4"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/TRUSTED_MOCK_APPROVAL_NOT_HUMAN.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/TRUSTED_MOCK_APPROVAL_NOT_HUMAN.json",
+      "bytes": 504,
+      "sha256": "f98c008aab0f2e9e533a1a551cdc80ff06a0da2b0f517a36a6234d48f0d37108"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/COMMIT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/COMMIT.json",
+      "bytes": 112,
+      "sha256": "017e151968f088b147ffc55aab55868a17bad5f0051e09066092397918fbfde7"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/EVENTS.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/EVENTS.json",
+      "bytes": 39,
+      "sha256": "b17535df1676fba0934f40e0333cecb8453f380eafee48de333ba551b0ad8734"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/MANIFEST.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/MANIFEST.json",
+      "bytes": 545,
+      "sha256": "d944d1b6a856778bdae4ddfecbb523081e1bea41d9f341cab7da40782705c180"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/RESULT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/RESULT.json",
+      "bytes": 4156,
+      "sha256": "8faf89c5125e919c819326ccaf4e26ebbd80f7471df4da4657bb8416feeec1ee"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/STRUCTURE.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/STRUCTURE.json",
+      "bytes": 1729,
+      "sha256": "5bb39d189f10fbe399edeaa34c627ab90247f58b30021df0e6bc221c18f6c2a4"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/TRIGGER.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/baseline_bundle/TRIGGER.json",
+      "bytes": 210,
+      "sha256": "b9cc24fbbd87a665c97d6dbe9ce5135a0d3248a89df07e096cf2b25b7502cdde"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/COMMIT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/COMMIT.json",
+      "bytes": 112,
+      "sha256": "3105647367a4b4071f00648dd919699ac57d8bec9fec28ad53fed6368b368f35"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/EVENTS.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/EVENTS.json",
+      "bytes": 39,
+      "sha256": "b17535df1676fba0934f40e0333cecb8453f380eafee48de333ba551b0ad8734"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/MANIFEST.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/MANIFEST.json",
+      "bytes": 545,
+      "sha256": "c7218c3cda62b168f32e4d105cabfdcee8c87d07133fe7d97ed557b2ec701e3e"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/RESULT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/RESULT.json",
+      "bytes": 4176,
+      "sha256": "2ec3b4228e2f7598bf1900cd41f02f47b41ba0936167e6a1a957dfc80999dcf5"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/STRUCTURE.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/STRUCTURE.json",
+      "bytes": 1729,
+      "sha256": "5bb39d189f10fbe399edeaa34c627ab90247f58b30021df0e6bc221c18f6c2a4"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/TRIGGER.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_source/source_bundle/TRIGGER.json",
+      "bytes": 210,
+      "sha256": "b9cc24fbbd87a665c97d6dbe9ce5135a0d3248a89df07e096cf2b25b7502cdde"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/FORGED_PASS_NOT_APPROVED.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/FORGED_PASS_NOT_APPROVED.json",
+      "bytes": 2602,
+      "sha256": "7ff95d64778916510f85df33aa1d5f784df00837a2f788fee5c3ab665527773b"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/OBSERVATION.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/OBSERVATION.json",
+      "bytes": 740,
+      "sha256": "3e86f2d7fa2b022a3ed995bdb4560aab901a9e0ec143953eeace8e2ca28c5df2"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/REPORT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/REPORT.json",
+      "bytes": 2651,
+      "sha256": "075ae2fa38fa0d3e7e6bc89afe9f8382b88ee3476de160b771aee432ee881b85"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/TRUSTED_MOCK_APPROVAL_NOT_HUMAN.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/TRUSTED_MOCK_APPROVAL_NOT_HUMAN.json",
+      "bytes": 504,
+      "sha256": "5b6ca75b80cbf097bc6f5548b8e699342faa837d5036e99494b4ec5cd8d3349d"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/COMMIT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/COMMIT.json",
+      "bytes": 112,
+      "sha256": "3105647367a4b4071f00648dd919699ac57d8bec9fec28ad53fed6368b368f35"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/EVENTS.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/EVENTS.json",
+      "bytes": 39,
+      "sha256": "b17535df1676fba0934f40e0333cecb8453f380eafee48de333ba551b0ad8734"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/MANIFEST.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/MANIFEST.json",
+      "bytes": 545,
+      "sha256": "c7218c3cda62b168f32e4d105cabfdcee8c87d07133fe7d97ed557b2ec701e3e"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/RESULT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/RESULT.json",
+      "bytes": 4176,
+      "sha256": "2ec3b4228e2f7598bf1900cd41f02f47b41ba0936167e6a1a957dfc80999dcf5"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/STRUCTURE.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/STRUCTURE.json",
+      "bytes": 1729,
+      "sha256": "5bb39d189f10fbe399edeaa34c627ab90247f58b30021df0e6bc221c18f6c2a4"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/TRIGGER.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/baseline_bundle/TRIGGER.json",
+      "bytes": 210,
+      "sha256": "b9cc24fbbd87a665c97d6dbe9ce5135a0d3248a89df07e096cf2b25b7502cdde"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/COMMIT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/COMMIT.json",
+      "bytes": 112,
+      "sha256": "017e151968f088b147ffc55aab55868a17bad5f0051e09066092397918fbfde7"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/EVENTS.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/EVENTS.json",
+      "bytes": 39,
+      "sha256": "b17535df1676fba0934f40e0333cecb8453f380eafee48de333ba551b0ad8734"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/MANIFEST.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/MANIFEST.json",
+      "bytes": 545,
+      "sha256": "d944d1b6a856778bdae4ddfecbb523081e1bea41d9f341cab7da40782705c180"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/RESULT.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/RESULT.json",
+      "bytes": 4156,
+      "sha256": "8faf89c5125e919c819326ccaf4e26ebbd80f7471df4da4657bb8416feeec1ee"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/STRUCTURE.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/STRUCTURE.json",
+      "bytes": 1729,
+      "sha256": "5bb39d189f10fbe399edeaa34c627ab90247f58b30021df0e6bc221c18f6c2a4"
+    },
+    {
+      "path": "tests/fixtures/l06_original_issue_cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/TRIGGER.json",
+      "archive_member": "CDPD_A3_20261018/evidence/stage/cases/grid_history_S1_COMPLETE_S2_COMPLETE_baseline/source_bundle/TRIGGER.json",
+      "bytes": 210,
+      "sha256": "b9cc24fbbd87a665c97d6dbe9ce5135a0d3248a89df07e096cf2b25b7502cdde"
+    }
+  ]
+}
